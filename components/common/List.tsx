@@ -1,52 +1,65 @@
-import React from "react";
-import { GetServerSideProps } from "next";
+import React, { MouseEvent } from "react";
 import { useEffect } from "react";
 import axios from "axios";
+import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
+import { useRef } from "react";
 
-interface Props {
+interface ListProps {
   theme: string;
 }
 
-const List = ({ theme }: Props) => {
-  const search = async (theme: string) => {
-    const { data } = await axios.get("http://localhost:3001/vseeker");
-    console.log(data);
-    
+const List = ({ theme }: ListProps) => {
+  let count: number = 1;
+
+  const refUl = useRef<HTMLUListElement | null>(null);
+
+  useEffect(() => {}, []);
+
+  const slide = (e: MouseEvent<SVGElement>) => {
+    const distance = 162 * count * -1;
+    console.log(count);
+    if (refUl.current) {
+      const { style } = refUl.current;
+      switch (e.currentTarget.id) {
+        case "left":
+          count--;
+          style.transform = `translateX(${distance}px)`;
+          break;
+        case "right":
+          count++;
+          style.transform = `translateX(${distance}px)`;
+          break;
+      }
+      style.transitionDuration = "0.5s";
+    }
   };
 
-  useEffect(() => {
-    search(theme);
-  }, []);
-
   return (
-    <section className="flex flex-col gap-2 p-3">
-      <h3 className="pl-2 border-l-4 border-red-500 ">das</h3>
-      <ul className="flex overflow-x-scroll">
-        <li className="p-1">
-          <img
-            className="h-40 w-32 flex-shrink rounded-md"
-            src="https://cdn.onebauer.media/one/empire-images/articles/5ca1ec3f133d503e3a486a2e/avengers-russian-crop.jpg?format=jpg&amp;quality=80&amp;ratio=16-9&amp;resize=aspectfill"
-          />
-        </li>
-        <li className="p-1">
-          <img
-            className="h-40 w-32 flex-shrink rounded-md"
-            src="https://cdn.onebauer.media/one/empire-images/articles/5ca1ec3f133d503e3a486a2e/avengers-russian-crop.jpg?format=jpg&amp;quality=80&amp;ratio=16-9&amp;resize=aspectfill"
-          />
-        </li>
-        <li className="p-1">
-          <img
-            className="h-40 w-32 flex-shrink rounded-md"
-            src="https://cdn.onebauer.media/one/empire-images/articles/5ca1ec3f133d503e3a486a2e/avengers-russian-crop.jpg?format=jpg&amp;quality=80&amp;ratio=16-9&amp;resize=aspectfill"
-          />
-        </li>
-        <li className="p-1">
-          <img
-            className="h-40 w-32 flex-shrink rounded-md"
-            src="https://cdn.onebauer.media/one/empire-images/articles/5ca1ec3f133d503e3a486a2e/avengers-russian-crop.jpg?format=jpg&amp;quality=80&amp;ratio=16-9&amp;resize=aspectfill"
-          />
-        </li>
+    <section className="flex flex-col gap-2 relative p-4">
+      <h3 className="font-bold text-2xl pl-2">{theme}</h3>
+      <ul ref={refUl} className="flex gap-3 overflow-visible">
+        {new Array(10).fill(1).map((item, index) => (
+          <li className="poster flex-shrink-0" key={index}>
+            <img
+              className="cursor-pointer h-4/5 w-full rounded-md"
+              loading="lazy"
+              src="https://www.themoviedb.org/t/p/w220_and_h330_face/iXbWpCkIauBMStSTUT9v4GXvdgH.jpg"
+            />
+            <h4>Title</h4>
+            <h5>Sub Title</h5>
+          </li>
+        ))}
       </ul>
+      <AiFillCaretLeft
+        id="left"
+        className="poster_btn left-1"
+        onClick={slide}
+      />
+      <AiFillCaretRight
+        id="right"
+        className="poster_btn right-1"
+        onClick={slide}
+      />
     </section>
   );
 };

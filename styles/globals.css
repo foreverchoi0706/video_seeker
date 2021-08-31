@@ -19,16 +19,33 @@ a {
   box-sizing: border-box;
 }
 
-.toggled{
+.toggled {
   animation: toggle 0.3s linear forwards;
 }
 
-.unToggled{
+.unToggled {
   animation: toggle 0.3s linear reverse;
 }
 
+@layer utilities {
+  .poster {
+    height: 300px;
+    width: 150px;
+  }
+  .poster_btn {
+    position: absolute;
+    background: rgba(100, 100, 100, 0.5);
+    cursor: pointer;
+    border-radius: 50%;  
+    top: 11rem;
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+  }
+}
+
+
 @keyframes toggle {
-  to{
+  to {
     transform: translateX(15px);
   }
 }
