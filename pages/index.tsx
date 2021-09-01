@@ -8,13 +8,13 @@ import { useCallback } from "react";
 import Layout from "../components/common/Layout";
 import List from "../components/common/List";
 
-interface Props {
-  data: string;
+interface HomeProps {
+  items: Array<any>;
 }
 
 const Modal = () => {};
 
-const Home = ({ data }: Props) => {
+const Home = ({ items }: HomeProps) => {
   const [keyword, setKeyword] = useState<string>("");
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -51,16 +51,23 @@ const Home = ({ data }: Props) => {
           )}
         </div>
       </section>
-      <List theme="What's Popular" />
-      <List theme="Free To Watch" />
-      <List theme="Trend" />
+      <List theme="What's Popular" items={items} />
+      <List theme="Free To Watch" items={items} />
+      <List theme="Trend" items={items} />
     </article>
   );
 };
 
 export const getServerSideProps = async (context: GetServerSideProps) => {
+  const { data } = await axios.get(
+    "https://api.themoviedb.org/3/list/1?api_key=a0d47ee72ddde5e72e4bbb4115a04d7e&language=ko-KR"
+  );
+  console.log(data);
+  
   return {
-    props: {},
+    props: {
+      items: data.items,
+    },
   };
 };
 

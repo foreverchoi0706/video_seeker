@@ -1,60 +1,83 @@
-import React, { MouseEvent } from "react";
-import { useEffect } from "react";
-import axios from "axios";
+import React, { useRef, MouseEvent } from "react";
+import { useRouter } from "next/router";
 import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
-import { useRef } from "react";
+import { MdNewReleases } from "react-icons/md";
+
+const DISTANCE: number = -162;
+
+const LIMIT: number = 13;
+
+const MIN: number = 0;
 
 interface ListProps {
   theme: string;
+  items: Array<any>;
 }
 
-const List = ({ theme }: ListProps) => {
-  let count: number = 1;
+const toSummary = (text: string) => {
+  if (text.length > LIMIT) {
+    return `${text.slice(0, LIMIT)}...`;
+  }
+  return text;
+};
+
+const List = ({ theme, items }: ListProps) => {
+
+  const router = useRouter();
+
+  const count = useRef<number>(MIN);
 
   const refUl = useRef<HTMLUListElement | null>(null);
 
-  useEffect(() => {}, []);
-
   const slide = (e: MouseEvent<SVGElement>) => {
-    const distance = 162 * count * -1;
-    console.log(count);
     if (refUl.current) {
       const { style } = refUl.current;
       switch (e.currentTarget.id) {
         case "left":
-          count--;
-          style.transform = `translateX(${distance}px)`;
+          count.current--;
           break;
         case "right":
-          count++;
-          style.transform = `translateX(${distance}px)`;
+          count.current++;
           break;
       }
+      style.transform = `translateX(${DISTANCE * count.current}px)`;
       style.transitionDuration = "0.5s";
     }
   };
 
+  const goDetail = (id: number) => {
+    router.push(`/detail/${id}`);
+  };
+
   return (
-    <section className="flex flex-col gap-2 relative p-4">
-      <h3 className="font-bold text-2xl pl-2">{theme}</h3>
+    <section className="flex flex-col gap-2 my-10 px-3 relative">
+      <h3 className="font-bold text-2xl">{theme}</h3>
       <ul ref={refUl} className="flex gap-3 overflow-visible">
-        {new Array(10).fill(1).map((item, index) => (
-          <li className="poster flex-shrink-0" key={index}>
-            <img
-              className="cursor-pointer h-4/5 w-full rounded-md"
-              loading="lazy"
-              src="https://www.themoviedb.org/t/p/w220_and_h330_face/iXbWpCkIauBMStSTUT9v4GXvdgH.jpg"
-            />
-            <h4>Title</h4>
-            <h5>Sub Title</h5>
-          </li>
-        ))}
+        {items && items.length
+          ? items.map((item) => (
+              <li className="poster flex-shrink-0" key={item.id}>
+                <img
+                  className="cursor-pointer h-4/5 w-full rounded-md"
+                  loading="lazy"
+                  src={`https://www.themoviedb.org/t/p/w220_and_h330_face/${item.poster_path}`}
+                  onClick={() => goDetail(item.id)}
+                />
+                <h4 className="font-bold text-sm">{toSummary(item.title)}</h4>
+                <h5 className="flex font-bold items-center text-sm">
+                  <MdNewReleases className="inline mr-1" />
+                  {item.release_date}
+                </h5>
+              </li>
+            ))
+          : null}
       </ul>
+
       <AiFillCaretLeft
         id="left"
         className="poster_btn left-1"
         onClick={slide}
       />
+
       <AiFillCaretRight
         id="right"
         className="poster_btn right-1"

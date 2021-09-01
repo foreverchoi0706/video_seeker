@@ -9,6 +9,9 @@ module.exports = {
       },
       minWidth : {
         1024 : "1024px"
+      },
+      padding : {
+        "x10vw" : "0 10vw 0 10vw"
       }
     },
   },

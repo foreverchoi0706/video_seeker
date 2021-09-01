@@ -10,10 +10,10 @@ interface LayoutProps {
 const Layout = ({ children }: LayoutProps) => {
   return (
     <>
-      <header>
+      <header className="bg-black p-0 lg:p-x10vw">
         <Gnb />
       </header>
-      <main>{children}</main>
+      <main className="flex p-0 lg:p-x10vw">{children}</main>
       <footer>
         <Links />
       </footer>

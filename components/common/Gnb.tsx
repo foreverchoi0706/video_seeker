@@ -1,9 +1,9 @@
-import React, { MouseEventHandler } from "react";
+import React, { MouseEventHandler, MouseEvent } from "react";
 import { useDispatch } from "react-redux";
 import { FaBeer } from "react-icons/fa";
 import { BsSearch } from "react-icons/bs";
 /**@components */
-import DarkModeToogle from "../button/DarkModeToogle";
+import DarkModeToogle from "../toggle/DarkModeToogle";
 
 const Lnb = () => {
   return <ul className="absolute bg-white w-full rounded-b-md"></ul>;
@@ -16,7 +16,7 @@ const Gnb = () => {
     console.log(e.currentTarget.value);
   };
 
-  const search = (e: MouseEventHandler<any>) => {
+  const search = () => {
     dispatch({
       type: "TEST",
       payload: "test",
@@ -24,7 +24,7 @@ const Gnb = () => {
   };
 
   return (
-    <nav className="flex w-full py-3 items-center bg-black">
+    <nav className="flex w-full py-3 items-center">
       <ul className="flex flex-1">
         <li
           className="relative flex-1 text-center text-white"
