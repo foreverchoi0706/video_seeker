@@ -11,7 +11,7 @@ module.exports = {
         1024 : "1024px"
       },
       padding : {
-        "x10vw" : "0 10vw 0 10vw"
+        "x15vw" : "0 15vw 0 15vw"
       }
     },
   },

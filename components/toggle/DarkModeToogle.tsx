@@ -32,7 +32,7 @@ const DarkModeToogle = () => {
     <div className="w-12 bg-white rounded-xl">
       <div
         ref={refToggle}
-        className="bg-green-300 h-full w-1/2 rounded-xl cursor-pointer"
+        className="bg-green-300 h-5 w-1/2 rounded-xl cursor-pointer"
         onClick={toggle}
       />
     </div>

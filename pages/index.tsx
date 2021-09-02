@@ -1,38 +1,43 @@
-import { ChangeEvent } from "react";
-import axios from "axios";
-import { GetServerSideProps } from "next";
+import { useState, useEffect, ChangeEvent } from "react";
 import Head from "next/head";
-import { useState } from "react";
-import { useCallback } from "react";
-//components
-import Layout from "../components/common/Layout";
+import axios from "axios";
+/**@components */
 import List from "../components/common/List";
+/**@types */
+import Movie from "../types/Movie";
+import TvShow from "../types/TvShow";
 
 interface HomeProps {
-  items: Array<any>;
+  backdropPath: string;
+  whatsPopular: Array<Movie>;
+  freeToWatch: Array<Movie>;
+  trend: Array<Movie | TvShow>;
 }
 
-const Modal = () => {};
-
-const Home = ({ items }: HomeProps) => {
+const Home = ({
+  backdropPath,
+  whatsPopular,
+  freeToWatch,
+  trend,
+}: HomeProps) => {
   const [keyword, setKeyword] = useState<string>("");
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setKeyword(() => e.target.value);
   };
 
-  const handleClick = useCallback((e) => {}, []);
-
   return (
     <article className="overflow-x-hidden">
       <Head>
-        <title>video-seeker</title>
+        <title>Home</title>
       </Head>
       <section className="relative">
         <img
-          onClick={handleClick}
-          src="https://cdn.onebauer.media/one/empire-images/articles/5ca1ec3f133d503e3a486a2e/avengers-russian-crop.jpg?format=jpg&amp;quality=80&amp;ratio=16-9&amp;resize=aspectfill"
+          alt="head_img"
+          loading="eager"
+          src={`https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces/${backdropPath}`}
         />
+
         <div className="absolute bottom-5 w-full flex flex-col items-center">
           <input
             type="text"
@@ -40,33 +45,39 @@ const Home = ({ items }: HomeProps) => {
             value={keyword}
             onChange={handleChange}
           />
-          {keyword && (
-            <div className="bg-red-500 absolute -bottom-5 w-4/6">
-              dasdsad dasdsad Lorem, ipsum dolor sit amet consectetur
-              adipisicing elit. Placeat deleniti sunt dignissimos commodi
-              ducimus molestias ab porro animi similique eaque corporis
-              inventore, at quidem deserunt natus consequatur omnis? Fuga,
-              voluptatibus?
-            </div>
-          )}
         </div>
       </section>
-      <List theme="What's Popular" items={items} />
-      <List theme="Free To Watch" items={items} />
-      <List theme="Trend" items={items} />
+      <List theme="What's Popular" items={whatsPopular} />
+      <List theme="Free To Watch" items={freeToWatch} />
+      <List theme="Trend" items={trend} />
     </article>
   );
 };
 
-export const getServerSideProps = async (context: GetServerSideProps) => {
-  const { data } = await axios.get(
+export const getServerSideProps = async () => {
+  const whatsPopular = await axios.get(
     "https://api.themoviedb.org/3/list/1?api_key=a0d47ee72ddde5e72e4bbb4115a04d7e&language=ko-KR"
   );
-  console.log(data);
-  
+  const freeToWatch = await axios.get(
+    "https://api.themoviedb.org/3/list/2?api_key=a0d47ee72ddde5e72e4bbb4115a04d7e&language=ko-KR"
+  );
+  const trend = await axios.get(
+    "https://api.themoviedb.org/3/trending/all/day?api_key=a0d47ee72ddde5e72e4bbb4115a04d7e&language=ko-KR"
+  );
+
+  const arr = [
+    ...whatsPopular.data.items,
+    ...freeToWatch.data.items,
+    ...trend.data.results,
+  ];
+  const random = Math.floor(Math.random() * arr.length);
+
   return {
     props: {
-      items: data.items,
+      backdropPath: arr[random].backdrop_path,
+      whatsPopular: whatsPopular.data.items,
+      freeToWatch: freeToWatch.data.items,
+      trend: trend.data.results,
     },
   };
 };

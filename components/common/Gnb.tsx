@@ -4,6 +4,7 @@ import { FaBeer } from "react-icons/fa";
 import { BsSearch } from "react-icons/bs";
 /**@components */
 import DarkModeToogle from "../toggle/DarkModeToogle";
+import LaguageTooggle from "../toggle/LaguageTooggle";
 
 const Lnb = () => {
   return <ul className="absolute bg-white w-full rounded-b-md"></ul>;
@@ -12,46 +13,28 @@ const Lnb = () => {
 const Gnb = () => {
   const dispatch = useDispatch();
 
-  const enterGnb = (e: React.MouseEvent<HTMLLIElement>) => {
-    console.log(e.currentTarget.value);
-  };
-
-  const search = () => {
-    dispatch({
-      type: "TEST",
-      payload: "test",
-    });
-  };
+  const enterGnb = (e: React.MouseEvent<HTMLLIElement>) => {};
 
   return (
-    <nav className="flex w-full py-3 items-center">
-      <ul className="flex flex-1">
-        <li
-          className="relative flex-1 text-center text-white"
-          onMouseEnter={enterGnb}
-        >
+    <nav className="flex items-center  py-3 w-full">
+      <ul className="flex flex-1 justify-between">
+        <li className="relative text-center text-white" onMouseEnter={enterGnb}>
           Movies
           <Lnb />
         </li>
-        <li
-          className="relative flex-1 text-center text-white"
-          onMouseEnter={enterGnb}
-        >
+        <li className="relative text-center text-white" onMouseEnter={enterGnb}>
           TV Shows
           <Lnb />
         </li>
-        <li
-          className="relative flex-1 text-center text-white"
-          onMouseEnter={enterGnb}
-        >
+        <li className="relative text-center text-white" onMouseEnter={enterGnb}>
           People
           <Lnb />
         </li>
+        <li className="flex items-center gap-3">
+          <LaguageTooggle />
+          <DarkModeToogle />
+        </li>
       </ul>
-      <BsSearch
-        className="cursor-pointer text-white mx-4 text-xl"
-        onClick={search}
-      />
     </nav>
   );
 };
