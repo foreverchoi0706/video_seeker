@@ -6,6 +6,7 @@ import List from "../components/common/List";
 /**@types */
 import Movie from "../types/Movie";
 import TvShow from "../types/TvShow";
+import { GetStaticProps } from "next";
 
 interface HomeProps {
   backdropPath: string;
@@ -32,8 +33,11 @@ const Home = ({
         <title>Home</title>
       </Head>
       <section className="relative">
+        <h1 className="absolute animate-reverse-one-ping text-3xl my-10 text-white text-center w-full z-10">Video Seeker</h1>
+        <h2 className="absolute animate-reverse-one-ping text-xl my-24 text-white text-center w-full z-10">The Awesome Media Delivery Site</h2>
         <img
           alt="head_img"
+          className="filter brightness-50"
           loading="eager"
           src={`https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces/${backdropPath}`}
         />
@@ -54,7 +58,7 @@ const Home = ({
   );
 };
 
-export const getServerSideProps = async () => {
+export const getStaticProps = async () => {
   const whatsPopular = await axios.get(
     "https://api.themoviedb.org/3/list/1?api_key=a0d47ee72ddde5e72e4bbb4115a04d7e&language=ko-KR"
   );
