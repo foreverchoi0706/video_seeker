@@ -8,7 +8,7 @@ import { getStyles, toSummary } from "../../utilities/common";
 
 interface ListProps {
   theme: string;
-  items: Array<Movie | TvShow>;
+  items: Array<any>;
 }
 
 interface ToggleProps {
