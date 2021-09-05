@@ -3,7 +3,7 @@ import { GiHumanTarget } from "react-icons/gi";
 
 const Links = () => {
   return (
-    <ul className="flex justify-between w-full py-3  text-center text-white">
+    <ul className="flex justify-between w-full p-3 text-center text-white">
       <li className="cursor-pointer">
         <FaGithub
           size={33}

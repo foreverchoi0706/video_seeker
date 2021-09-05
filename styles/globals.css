@@ -38,27 +38,10 @@ a {
   animation: toggle 0.3s linear reverse;
 }
 
-.poster > img:hover {
+.poster:hover {
   transform: scale(1.05);
   transition-duration: 0.2s;
   filter: brightness(80%);
-}
-
-@layer utilities {
-  .poster {
-    height: 300px;
-    width: 150px;
-    overflow: hidden ;
-  }
-  .poster_btn {
-    position: absolute;
-    background: rgb(255, 255, 255);
-    cursor: pointer;
-    border-radius: 50%;
-    top: 9rem;
-    font-size: 1.875rem;
-    line-height: 2.25rem;
-  }
 }
 
 @keyframes toggle {

@@ -1,12 +1,13 @@
-import { useState, useEffect, ChangeEvent } from "react";
+import { useState, ChangeEvent } from "react";
+import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
+import { wrapper } from "./_app";
 import axios from "axios";
 /**@components */
 import List from "../components/common/List";
 /**@types */
 import Movie from "../types/Movie";
 import TvShow from "../types/TvShow";
-import { GetStaticProps } from "next";
 
 interface HomeProps {
   backdropPath: string;
@@ -15,7 +16,7 @@ interface HomeProps {
   trend: Array<Movie | TvShow>;
 }
 
-const Home = ({
+const Home: NextPage<any> = ({
   backdropPath,
   whatsPopular,
   freeToWatch,
@@ -33,8 +34,12 @@ const Home = ({
         <title>Home</title>
       </Head>
       <section className="relative">
-        <h1 className="absolute animate-reverse-one-ping text-3xl my-10 text-white text-center w-full z-10">Video Seeker</h1>
-        <h2 className="absolute animate-reverse-one-ping text-xl my-24 text-white text-center w-full z-10">The Awesome Media Delivery Site</h2>
+        <h1 className="absolute animate-reverse-one-ping text-3xl my-4 text-white text-center w-full z-10 md:my-10">
+          Video Seeker
+        </h1>
+        <h2 className="absolute animate-reverse-one-ping text-xl my-14 text-white text-center w-full z-10 md:my-24">
+          The Awesome Media Delivery Site
+        </h2>
         <img
           alt="head_img"
           className="filter brightness-50"
@@ -58,32 +63,33 @@ const Home = ({
   );
 };
 
-export const getStaticProps = async () => {
-  const whatsPopular = await axios.get(
-    "https://api.themoviedb.org/3/list/1?api_key=a0d47ee72ddde5e72e4bbb4115a04d7e&language=ko-KR"
-  );
-  const freeToWatch = await axios.get(
-    "https://api.themoviedb.org/3/list/2?api_key=a0d47ee72ddde5e72e4bbb4115a04d7e&language=ko-KR"
-  );
-  const trend = await axios.get(
-    "https://api.themoviedb.org/3/trending/all/day?api_key=a0d47ee72ddde5e72e4bbb4115a04d7e&language=ko-KR"
-  );
-
-  const arr = [
-    ...whatsPopular.data.items,
-    ...freeToWatch.data.items,
-    ...trend.data.results,
-  ];
-  const random = Math.floor(Math.random() * arr.length);
-
-  return {
-    props: {
-      backdropPath: arr[random].backdrop_path,
-      whatsPopular: whatsPopular.data.items,
-      freeToWatch: freeToWatch.data.items,
-      trend: trend.data.results,
-    },
-  };
-};
+export const getStaticProps = wrapper.getStaticProps(
+  (store) =>
+    async ({ preview }) => {
+      const whatsPopular = await axios.get(
+        "https://api.themoviedb.org/3/list/1?api_key=a0d47ee72ddde5e72e4bbb4115a04d7e&language=ko-KR"
+      );
+      const freeToWatch = await axios.get(
+        "https://api.themoviedb.org/3/list/2?api_key=a0d47ee72ddde5e72e4bbb4115a04d7e&language=ko-KR"
+      );
+      const trend = await axios.get(
+        "https://api.themoviedb.org/3/trending/all/day?api_key=a0d47ee72ddde5e72e4bbb4115a04d7e&language=ko-KR"
+      );
+      const arr = [
+        ...whatsPopular.data.items,
+        ...freeToWatch.data.items,
+        ...trend.data.results,
+      ];
+      const random = Math.floor(Math.random() * arr.length);
+      return {
+        props: {
+          backdropPath: arr[random].backdrop_path,
+          whatsPopular: whatsPopular.data.items,
+          freeToWatch: freeToWatch.data.items,
+          trend: trend.data.results,
+        },
+      };
+    }
+);
 
 export default Home;

@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, MouseEvent } from "react";
+import React, { MouseEventHandler, MouseEvent, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { FaBeer } from "react-icons/fa";
 import { BsSearch } from "react-icons/bs";
@@ -13,10 +13,16 @@ const Lnb = () => {
 const Gnb = () => {
   const dispatch = useDispatch();
 
+  useEffect(()=> {
+    dispatch({
+      type : "TEST"
+    })
+  })
+
   const enterGnb = (e: React.MouseEvent<HTMLLIElement>) => {};
 
   return (
-    <nav className="flex items-center  py-3 w-full">
+    <nav className="flex items-center p-3 w-full">
       <ul className="flex flex-1 justify-between">
         <li className="relative text-center text-white" onMouseEnter={enterGnb}>
           Movies

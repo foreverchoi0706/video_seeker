@@ -7,12 +7,14 @@ import { LineProgressBar } from "@frogress/line";
 import { CircularProgressbarWithChildren } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { AiFillFire } from "react-icons/ai";
+import { dateToString, getStyles } from "../../utilities/common";
 
 interface DetailProps {
   item: MovieDetail;
+  reviews: Array<any>;
 }
 
-const Detail = ({ item }: DetailProps) => {
+const Detail = ({ item, reviews }: DetailProps) => {
   const router = useRouter();
   return (
     <article>
@@ -52,6 +54,7 @@ const Detail = ({ item }: DetailProps) => {
                 <CircularProgressbarWithChildren
                   value={item.vote_average}
                   maxValue={10}
+                  styles={getStyles(item.vote_average)}
                 >
                   <AiFillFire />
                   <strong>{item.vote_average}</strong>
@@ -68,9 +71,34 @@ const Detail = ({ item }: DetailProps) => {
       </section>
 
       <section className="p-1">
+        <ul className=" grid grid-cols-3 justify-items-center gap-3">
+          {item.production_companies
+            .filter((item) => item.logo_path)
+            .map((item) => (
+              <li key={item.id}>
+                <img
+                  alt={item.name}
+                  src={`https://www.themoviedb.org/t/p/h60/${item.logo_path}`}
+                />
+              </li>
+            ))}
+        </ul>
       </section>
 
-      <section className="p-1">리뷰</section>
+      <section className="p-1">
+        <h2></h2>
+        <ul className="h-96 overflow-y-scroll rounded-md ">
+          {reviews.map((item) => (
+            <li key={item.id} className="p-3 my-3 ">
+              <h3 className="font-bold">
+                {item.author} -<span>{dateToString(item.created_at)}</span>
+              </h3>
+              <div>{item.content}</div>
+              <div>{item.author_details.rating}</div>
+            </li>
+          ))}
+        </ul>
+      </section>
     </article>
   );
 };
@@ -83,11 +111,15 @@ export const getServerSideProps = async (
   const result = await axios.get(
     `https://api.themoviedb.org/3/movie/${id}?api_key=a0d47ee72ddde5e72e4bbb4115a04d7e&language=ko-KR`
   );
-  console.log(result.data);
+
+  const reviews = await axios.get(
+    `https://api.themoviedb.org/3/movie/283995/reviews?api_key=a0d47ee72ddde5e72e4bbb4115a04d7e&page=1`
+  );
 
   return {
     props: {
       item: result.data,
+      reviews: reviews.data.results,
     },
   };
 };
