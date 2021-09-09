@@ -52,8 +52,8 @@ const List = ({ theme, items }: ListProps) => {
                   </CircularProgressbarWithChildren>
                 </div>
                 <h4 className="font-bold my-2 text-sm">
-                  {toSummary(item.title, LIMIT)}
-                  {toSummary(item.name, LIMIT)}
+                  {item.title && toSummary(item.title, LIMIT)}
+                  {item.name && toSummary(item.name, LIMIT)}
                 </h4>
                 <h4 className="font-bold my-2 text-sm">
                   {item.release_date}
