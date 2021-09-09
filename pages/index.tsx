@@ -11,14 +11,16 @@ import TvShow from "../types/TvShow";
 
 interface HomeProps {
   backdropPath: string;
-  whatsPopular: Array<Movie>;
+  popular: Array<Movie>;
+  nowPaying: Array<Movie>;
   freeToWatch: Array<Movie>;
   trend: Array<Movie | TvShow>;
 }
 
 const Home: NextPage<any> = ({
   backdropPath,
-  whatsPopular,
+  popular,
+  nowPaying,
   freeToWatch,
   trend,
 }: HomeProps) => {
@@ -56,40 +58,47 @@ const Home: NextPage<any> = ({
           />
         </div>
       </section>
-      <List theme="What's Popular" items={whatsPopular} />
+      <List theme="What's Popular" items={popular} />
+      <List theme="Now Playing" items={nowPaying} />
       <List theme="Free To Watch" items={freeToWatch} />
       <List theme="Trend" items={trend} />
     </article>
   );
 };
 
-export const getStaticProps = wrapper.getStaticProps(
-  (store) =>
-    async ({ preview }) => {
-      const whatsPopular = await axios.get(
-        "https://api.themoviedb.org/3/list/1?api_key=a0d47ee72ddde5e72e4bbb4115a04d7e&language=ko-KR"
-      );
-      const freeToWatch = await axios.get(
-        "https://api.themoviedb.org/3/list/2?api_key=a0d47ee72ddde5e72e4bbb4115a04d7e&language=ko-KR"
-      );
-      const trend = await axios.get(
-        "https://api.themoviedb.org/3/trending/all/day?api_key=a0d47ee72ddde5e72e4bbb4115a04d7e&language=ko-KR"
-      );
-      const arr = [
-        ...whatsPopular.data.items,
-        ...freeToWatch.data.items,
-        ...trend.data.results,
-      ];
-      const random = Math.floor(Math.random() * arr.length);
-      return {
-        props: {
-          backdropPath: arr[random].backdrop_path,
-          whatsPopular: whatsPopular.data.items,
-          freeToWatch: freeToWatch.data.items,
-          trend: trend.data.results,
-        },
-      };
-    }
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) => async () => {
+    const popular = await axios.get(
+      `https://api.themoviedb.org/3/movie/popular?api_key=a0d47ee72ddde5e72e4bbb4115a04d7e&language=ko-KR&page=1`
+    );
+    const nowPaying = await axios.get(
+      "https://api.themoviedb.org/3/movie/now_playing?api_key=a0d47ee72ddde5e72e4bbb4115a04d7e&language=ko-KR&page=1"
+    );
+    const freeToWatch = await axios.get(
+      "https://api.themoviedb.org/3/list/2?api_key=a0d47ee72ddde5e72e4bbb4115a04d7e&language=ko-KR"
+    );
+    const trend = await axios.get(
+      "https://api.themoviedb.org/3/trending/all/day?api_key=a0d47ee72ddde5e72e4bbb4115a04d7e&language=ko-KR"
+    );
+
+    const arr = [
+      ...popular.data.results,
+      ...nowPaying.data.results,
+      ...freeToWatch.data.items,
+      ...trend.data.results,
+    ];
+
+    const random = Math.floor(Math.random() * arr.length);
+    return {
+      props: {
+        backdropPath: arr[random].backdrop_path,
+        popular: popular.data.results,
+        nowPaying: nowPaying.data.results,
+        freeToWatch: freeToWatch.data.items,
+        trend: trend.data.results,
+      },
+    };
+  }
 );
 
 export default Home;

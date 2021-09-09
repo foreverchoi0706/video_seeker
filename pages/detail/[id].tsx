@@ -5,19 +5,30 @@ import axios from "axios";
 import MovieDetail from "../../types/MovieDetail";
 import { LineProgressBar } from "@frogress/line";
 import { CircularProgressbarWithChildren } from "react-circular-progressbar";
-import "react-circular-progressbar/dist/styles.css";
 import { AiFillFire } from "react-icons/ai";
-import { dateToString, getStyles } from "../../utilities/common";
+/**@utilities */
+import { getStyles } from "../../utilities/common";
+/**@config */
+import { API_KEY } from "../../config.json";
+/**@components */
+import List from "../../components/common/List";
+import Companies from "../../components/list/Compaies";
+import Reviews from "../../components/list/Reviews";
+/**@styles */
+import "react-circular-progressbar/dist/styles.css";
+/**@types */
+import Movie from "../../types/Movie";
+
 
 interface DetailProps {
   item: MovieDetail;
   reviews: Array<any>;
+  similars: Array<Movie>;
 }
 
-const Detail = ({ item, reviews }: DetailProps) => {
-  const router = useRouter();
+const Detail = ({ item, reviews, similars }: DetailProps) => {
   return (
-    <article>
+    <article className="overflow-x-hidden">
       <Head>
         <title>{item.title}</title>
       </Head>
@@ -30,13 +41,13 @@ const Detail = ({ item, reviews }: DetailProps) => {
         />
         <div
           className="
-        static flex p-1 gap-3 lg:gap-10 lg:text-white lg:p-x5vw  lg:top-1/2  lg:left-1/2  lg:transform  lg:-translate-x-1/2  lg:-translate-y-1/2 w-full lg:absolute"
+        static flex p-1 gap-3 w-full lg:gap-10 lg:text-white lg:p-x5vw lg:top-1/2 lg:left-1/2 lg:transform lg:-translate-x-1/2 lg:-translate-y-1/2 lg:absolute"
         >
           <img
             className="rounded-lg w-60 h-96"
             src={`https://www.themoviedb.org/t/p/w220_and_h330_face/${item.poster_path}`}
           />
-          <div className="flex flex-col justify-between">
+          <div className="flex flex-col">
             <h2 className="text-base mb-2 md:text-2xl">
               {item.title} ({item.release_date})<br />
               <span className="italic">{item.tagline}</span>
@@ -49,7 +60,7 @@ const Detail = ({ item, reviews }: DetailProps) => {
                 <li key={item.id}>{item.name}</li>
               ))}
             </ul>
-            <ul className="flex gap-3 items-center">
+            <div className="flex gap-3 items-center mb-2">
               <div className="w-16 h-16">
                 <CircularProgressbarWithChildren
                   value={item.vote_average}
@@ -65,39 +76,43 @@ const Detail = ({ item, reviews }: DetailProps) => {
                 <LineProgressBar percent={item.vote_average} />
                 <LineProgressBar percent={item.revenue} />
               </div>
-            </ul>
+            </div>
+
+            <div className="flex gap-3 flex-grow text-sm lg:text-base">
+              <a href={item.homepage} rel="noreferrer" target="_blank">
+                공식 홈페이지
+              </a>
+              <a href={item.homepage} rel="noreferrer" target="_blank">
+                배급사
+              </a>
+              <a href={item.homepage} rel="noreferrer" target="_blank">
+                출연진
+              </a>
+              <a href={item.homepage} rel="noreferrer" target="_blank">
+                관련
+              </a>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="p-1">
-        <ul className=" grid grid-cols-3 justify-items-center gap-3">
-          {item.production_companies
-            .filter((item) => item.logo_path)
-            .map((item) => (
-              <li key={item.id}>
-                <img
-                  alt={item.name}
-                  src={`https://www.themoviedb.org/t/p/h60/${item.logo_path}`}
-                />
-              </li>
-            ))}
-        </ul>
+      <section className="p-1 my-6">
+        <h2>Companies</h2>
+        <Companies items={item.production_companies} />
       </section>
 
-      <section className="p-1">
-        <h2></h2>
-        <ul className="h-96 overflow-y-scroll rounded-md ">
-          {reviews.map((item) => (
-            <li key={item.id} className="p-3 my-3 ">
-              <h3 className="font-bold">
-                {item.author} -<span>{dateToString(item.created_at)}</span>
-              </h3>
-              <div>{item.content}</div>
-              <div>{item.author_details.rating}</div>
-            </li>
-          ))}
-        </ul>
+      <section className="p-1 my-6">
+        <h2>Peoples</h2>
+        <Companies items={item.production_companies} />
+      </section>
+
+      <section className="p-1 my-6">
+        <h2>Reviews</h2>
+        <Reviews items={reviews} />
+      </section>
+      <section className="p-1 my-6">
+        <h2>SIMILARS</h2>
+        <List items={similars} />
       </section>
     </article>
   );
@@ -108,18 +123,25 @@ export const getServerSideProps = async (
 ) => {
   const { id } = context.query;
 
-  const result = await axios.get(
-    `https://api.themoviedb.org/3/movie/${id}?api_key=a0d47ee72ddde5e72e4bbb4115a04d7e&language=ko-KR`
+  const detail = await axios.get(
+    `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=ko-KR`
   );
 
   const reviews = await axios.get(
-    `https://api.themoviedb.org/3/movie/283995/reviews?api_key=a0d47ee72ddde5e72e4bbb4115a04d7e&page=1`
+    `https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${API_KEY}&page=1`
   );
+
+  const similars = await axios.get(
+    `https://api.themoviedb.org/3/movie/${id}/similar?api_key=${API_KEY}&language=ko-KR&page=1`
+  );
+
+  console.log(similars);
 
   return {
     props: {
-      item: result.data,
+      item: detail.data,
       reviews: reviews.data.results,
+      similars: similars.data.results,
     },
   };
 };

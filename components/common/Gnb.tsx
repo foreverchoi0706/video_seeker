@@ -1,10 +1,8 @@
-import React, { MouseEventHandler, MouseEvent, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { FaBeer } from "react-icons/fa";
-import { BsSearch } from "react-icons/bs";
 /**@components */
-import DarkModeToogle from "../toggle/DarkModeToogle";
-import LaguageTooggle from "../toggle/LaguageTooggle";
+import DarkModeToogle from "../button/DarkModeToogle";
+import LaguageTooggle from "../button/LaguageTooggle";
 
 const Lnb = () => {
   return <ul className="absolute bg-white w-full rounded-b-md"></ul>;
@@ -13,11 +11,11 @@ const Lnb = () => {
 const Gnb = () => {
   const dispatch = useDispatch();
 
-  useEffect(()=> {
+  useEffect(() => {
     dispatch({
-      type : "TEST"
-    })
-  })
+      type: "TEST",
+    });
+  });
 
   const enterGnb = (e: React.MouseEvent<HTMLLIElement>) => {};
 

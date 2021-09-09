@@ -1,49 +1,20 @@
 import React, { memo, useCallback } from "react";
 import { useRouter } from "next/router";
+import { CircularProgressbarWithChildren } from "react-circular-progressbar";
 /**@types */
 import Movie from "../../types/Movie";
 import TvShow from "../../types/TvShow";
-import { CircularProgressbarWithChildren } from "react-circular-progressbar";
+/**@utilities */
 import { getStyles, toSummary } from "../../utilities/common";
+/**@components */
+import ListBtns from "../button/ListBtns";
 
 interface ListProps {
-  theme: string;
-  items: Array<any>;
-}
-
-interface ToggleProps {
-  theme: string;
+  theme?: string;
+  items: Array<Movie | TvShow>;
 }
 
 const LIMIT: number = 13;
-
-const Toggle = ({ theme }: ToggleProps) => {
-  switch (theme) {
-    case "What's Popular":
-      return (
-        <div>
-          <button>WEEK</button>
-          <button>TODAY</button>
-        </div>
-      );
-    case "Free To Watch":
-      return (
-        <div>
-          <button>WEEK</button>
-          <button>TODAY</button>
-        </div>
-      );
-    case "Trend":
-      return (
-        <div>
-          <button>WEEK</button>
-          <button>TODAY</button>
-        </div>
-      );
-    default:
-      return null;
-  }
-};
 
 const List = ({ theme, items }: ListProps) => {
   const router = useRouter();
@@ -53,9 +24,9 @@ const List = ({ theme, items }: ListProps) => {
 
   return (
     <section className="flex flex-col gap-2 my-10 px-3 relative">
-      <h3 className="font-bold text-2xl">
+      <h3 className="flex font-bold text-lg items-center md:text-2xl">
         {theme}
-        <Toggle theme={theme} />
+        <ListBtns theme={theme!} />
       </h3>
       <ul className="flex gap-3 overflow-x-scroll">
         {items && items.length
