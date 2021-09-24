@@ -1,31 +1,14 @@
 import type { AppProps } from "next/app";
-import {
-  applyMiddleware,
-  combineReducers,
-  compose,
-  createStore,
-  Store,
-} from "redux";
-import { Provider } from "react-redux";
-import { composeWithDevTools } from "redux-devtools-extension";
-import { createWrapper, Context, HYDRATE } from "next-redux-wrapper";
-
+import { applyMiddleware, createStore, Store } from "redux";
+import { createWrapper, Context } from "next-redux-wrapper";
+import thunk from "redux-thunk";
 /**@components */
 import Layout from "../components/common/Layout";
 /**@reducers */
 import root from "../reducers/root";
 /**@styles */
 import "../styles/globals.css";
-
-// const configureStore = () => {
-//   const middlewares: Array<any> = [];
-//   const enhancer =
-//     process.env.NODE_ENV === "production"
-//       ? compose(applyMiddleware(...middlewares))
-//       : composeWithDevTools(applyMiddleware(...middlewares));
-//   const store = createStore(root, enhancer);
-//   return store;
-// };
+import wrapper2 from "../reducers/store";
 
 // create a makeStore function
 const makeStore = (context: Context) => createStore(root);
@@ -41,4 +24,4 @@ function MyApp({ Component, pageProps }: AppProps) {
   );
 }
 
-export default wrapper.withRedux(MyApp);
+export default wrapper2.withRedux(MyApp);

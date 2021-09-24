@@ -18,6 +18,7 @@ const LIMIT: number = 13;
 
 const List = ({ theme, items }: ListProps) => {
   const router = useRouter();
+
   const goDetail = useCallback((id: number) => {
     router.push(`/detail/${id}`);
   }, []);

@@ -5,16 +5,19 @@ interface CompaniesProps {
 const Companies = ({ items }: CompaniesProps) => {
   return (
     <ul className=" grid grid-cols-3 justify-items-center gap-6">
-      {items
-        .filter((item) => item.logo_path)
-        .map((item) => (
-          <li key={item.id}>
-            <img
-              alt={item.name}
-              src={`https://www.themoviedb.org/t/p/h60/${item.logo_path}`}
-            />
-          </li>
-        ))}
+      {items.map((item) => (
+        <li className="w-full flex flex-col items-center" key={item.id}>
+          <img
+            className="h-16"
+            alt={item.name}
+            src={
+              item.logo_path
+                ? `https://www.themoviedb.org/t/p/h60/${item.logo_path}`
+                : "https://www.yepclinic.com/img/noimage2.png"
+            }
+          />
+        </li>
+      ))}
     </ul>
   );
 };

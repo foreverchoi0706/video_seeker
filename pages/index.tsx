@@ -1,13 +1,19 @@
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, useEffect } from "react";
 import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { wrapper } from "./_app";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
+/**@config */
+import { API_KEY } from "../config.json";
 /**@components */
 import List from "../components/common/List";
 /**@types */
 import Movie from "../types/Movie";
 import TvShow from "../types/TvShow";
+import { useDispatch } from "react-redux";
+import Searches from "../components/list/Searches";
+/**@reducers */
+import { GET_TREND } from "../reducers/video";
 
 interface HomeProps {
   backdropPath: string;
@@ -24,10 +30,30 @@ const Home: NextPage<any> = ({
   freeToWatch,
   trend,
 }: HomeProps) => {
+  const dispatch = useDispatch();
+
   const [keyword, setKeyword] = useState<string>("");
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const [res, setRes] = useState<Array<Movie> | null>([]);
+
+  useEffect(() => {
+    if (keyword) search();
+  }, [keyword]);
+
+  const inputKeyword = (e: ChangeEvent<HTMLInputElement>): void =>
     setKeyword(() => e.target.value);
+
+  const search = async (): Promise<any> => {
+    dispatch({
+      type: "SEARCH",
+      payload: keyword,
+    });
+    const res = await axios.get(
+      `https://api.themoviedb.org/3/search/multi?api_key=${API_KEY}&language=en-US&query=${keyword}&page=1&include_adult=false`
+    );
+    console.log(res);
+
+    setRes(res?.data.results);
   };
 
   return (
@@ -49,13 +75,14 @@ const Home: NextPage<any> = ({
           src={`https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces/${backdropPath}`}
         />
 
-        <div className="absolute bottom-5 w-full flex flex-col items-center">
+        <div className="absolute bottom-5 w-full flex flex-col items-center justify-center">
           <input
             type="text"
             className="focus:outline-none w-4/6 rounded-md p-1"
             value={keyword}
-            onChange={handleChange}
+            onChange={inputKeyword}
           />
+          {keyword && <Searches items={res} />}
         </div>
       </section>
       <List theme="What's Popular" items={popular} />

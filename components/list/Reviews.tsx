@@ -36,18 +36,16 @@ const Stars = ({ rating }: StarsProps) => {
 const Reviews = ({ items }: ReviewsProps) => {
   return (
     <ul className="h-96 overflow-y-scroll rounded-md p-3 ">
-      {items.length
-        ? items.map((item) => (
-            <li key={item.id} className="p-3 my-3  rounded-md shadow-lg">
-              <h3 className="font-bold">{item.author}</h3>
-              <div>{item.content}</div>
-              <strong className="block text-right">
-                {dateToString(item.created_at)}
-              </strong>
-              <Stars rating={item.author_details.rating} />
-            </li>
-          ))
-        : "No Write Reviews"}
+      {items.map((item) => (
+        <li key={item.id} className="p-3 my-3  rounded-md shadow-lg">
+          <h3 className="font-bold">{item.author}</h3>
+          <div>{item.content}</div>
+          <strong className="block text-right">
+            {dateToString(item.created_at)}
+          </strong>
+          <Stars rating={item.author_details.rating} />
+        </li>
+      ))}
     </ul>
   );
 };

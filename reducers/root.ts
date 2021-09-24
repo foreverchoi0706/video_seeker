@@ -1,9 +1,9 @@
 import { combineReducers } from "redux";
 /**@reducers */
-import test from "./test";
+import video from "./video";
 
 const root = combineReducers({
-  test,
+  video,
 });
 
 export default root;

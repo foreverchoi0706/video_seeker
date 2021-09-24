@@ -1,6 +1,5 @@
 import { GetServerSidePropsContext } from "next";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import axios from "axios";
 import MovieDetail from "../../types/MovieDetail";
 import { LineProgressBar } from "@frogress/line";
@@ -18,7 +17,6 @@ import Reviews from "../../components/list/Reviews";
 import "react-circular-progressbar/dist/styles.css";
 /**@types */
 import Movie from "../../types/Movie";
-
 
 interface DetailProps {
   item: MovieDetail;
@@ -82,38 +80,31 @@ const Detail = ({ item, reviews, similars }: DetailProps) => {
               <a href={item.homepage} rel="noreferrer" target="_blank">
                 공식 홈페이지
               </a>
-              <a href={item.homepage} rel="noreferrer" target="_blank">
-                배급사
-              </a>
-              <a href={item.homepage} rel="noreferrer" target="_blank">
-                출연진
-              </a>
-              <a href={item.homepage} rel="noreferrer" target="_blank">
-                관련
-              </a>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="p-1 my-6">
-        <h2>Companies</h2>
-        <Companies items={item.production_companies} />
-      </section>
+      {item.production_companies.length ? (
+        <section className="p-1 my-6">
+          <h2 className="font-bold px-6 py-1">Companies</h2>
+          <Companies items={item.production_companies} />
+        </section>
+      ) : null}
 
-      <section className="p-1 my-6">
-        <h2>Peoples</h2>
-        <Companies items={item.production_companies} />
-      </section>
+      {reviews.length ? (
+        <section className="p-1 my-6">
+          <h2 className="font-bold px-6 py-1">Reviews</h2>
+          <Reviews items={reviews} />
+        </section>
+      ) : null}
 
-      <section className="p-1 my-6">
-        <h2>Reviews</h2>
-        <Reviews items={reviews} />
-      </section>
-      <section className="p-1 my-6">
-        <h2>SIMILARS</h2>
-        <List items={similars} />
-      </section>
+      {similars.length ? (
+        <section className="p-1 my-6">
+          <h2 className="font-bold px-6 py-1">Similars</h2>
+          <List items={similars} />
+        </section>
+      ) : null}
     </article>
   );
 };
