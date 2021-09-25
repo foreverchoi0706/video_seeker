@@ -22,13 +22,13 @@ const Searches = ({ items }: SearchesProps) => {
                 {item.poster_path ? (
                   <img
                     alt="poster"
-                    className="poster cursor-pointer"
+                    className="poster"
                     loading="lazy"
                     src={`https://www.themoviedb.org/t/p/w220_and_h330_face/${item.poster_path}`}
                   />
                 ) : (
                   <img
-                    className="poster cursor-pointer w-full h-full"
+                    className="poster w-full h-full"
                     alt="poster"
                     src="https://i.pinimg.com/736x/aa/f7/05/aaf705e06726ce3881288ae4be3ac5fe.jpg"
                   />

@@ -38,6 +38,9 @@ a {
   animation: toggle 0.3s linear reverse;
 }
 
+.poster{
+  cursor: pointer;
+}
 .poster:hover {
   transform: scale(1.05);
   transition-duration: 0.2s;

@@ -20,6 +20,8 @@ module.exports = {
         "x15vw": "0 15vw 0 15vw"
       },
       gridTemplateColumns: {
+        "auto-235": "repeat(auto-fill,235px);",
+        "auto-200": "repeat(auto-fill,200px);",
         "auto-150": "repeat(auto-fill,150px);",
         "auto-75": "repeat(auto-fill,75px);"
       }

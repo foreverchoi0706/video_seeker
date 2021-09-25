@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 /**@components */
@@ -38,6 +39,8 @@ const Lnb = ({ type }: LnbProps) => {
 };
 
 const Gnb = () => {
+  const router = useRouter();
+
   const [hovered, setHovered] = useState(initialHovered);
 
   const enterGnb = (e: React.MouseEvent<HTMLLIElement>) => {
@@ -50,6 +53,11 @@ const Gnb = () => {
   return (
     <nav className="flex items-center py-3">
       <ul className="flex w-full text-white">
+        <li className="text-center flex-1">
+          <strong className="cursor-pointer" onClick={() => router.push("/")}>
+            HOME
+          </strong>
+        </li>
         <li className="relative text-center flex-1">
           <strong
             id="movies"
@@ -70,12 +78,8 @@ const Gnb = () => {
           </strong>
           {hovered.tvShows && <Lnb type="tvShows" />}
         </li>
-        <li className="relative text-center flex-1">
-          <strong
-            id="peoples"
-            className="cursor-pointer"
-            onMouseEnter={enterGnb}
-          >
+        <li className="text-center flex-1">
+          <strong className="cursor-pointer" onClick={() => router.push("/peoples")}>
             PEOPLES
           </strong>
           {hovered.peoples && <Lnb type="peoples" />}

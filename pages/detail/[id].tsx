@@ -45,9 +45,10 @@ const Detail = ({ item, reviews, similars }: DetailProps) => {
             className="rounded-lg w-60 h-96"
             src={`https://www.themoviedb.org/t/p/w220_and_h330_face/${item.poster_path}`}
           />
+          {/* <div className="absolute -bottom-20 w-11/12 right-0 rounded-md bg-white flex flex-col sm:static sm:bg-none"> */}
           <div className="flex flex-col">
             <h2 className="text-base mb-2 md:text-2xl">
-              {item.title} ({item.release_date})<br />
+              {item.title} ({item.release_date || "예정"})<br />
               <span className="italic">{item.tagline}</span>
             </h2>
 
@@ -86,22 +87,19 @@ const Detail = ({ item, reviews, similars }: DetailProps) => {
       </section>
 
       {item.production_companies.length ? (
-        <section className="p-1 my-6">
-          <h2 className="font-bold px-6 py-1">Companies</h2>
+        <section className="my-6 border-gray-500 border-2 py-4">
           <Companies items={item.production_companies} />
         </section>
       ) : null}
 
       {reviews.length ? (
-        <section className="p-1 my-6">
-          <h2 className="font-bold px-6 py-1">Reviews</h2>
+        <section className="my-6 border-gray-500 border-2">
           <Reviews items={reviews} />
         </section>
       ) : null}
 
       {similars.length ? (
-        <section className="p-1 my-6">
-          <h2 className="font-bold px-6 py-1">Similars</h2>
+        <section className="my-6 border-gray-500 border-2">
           <List items={similars} />
         </section>
       ) : null}

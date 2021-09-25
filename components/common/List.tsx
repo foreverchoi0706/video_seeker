@@ -36,7 +36,7 @@ const List = ({ theme, items }: ListProps) => {
                 <div className="w-52 overflow-hidden rounded-md">
                   <img
                     alt="poster"
-                    className="poster cursor-pointer h-4/5 w-full "
+                    className="poster h-4/5 w-full "
                     loading="lazy"
                     src={`https://www.themoviedb.org/t/p/w220_and_h330_face/${item.poster_path}`}
                     onClick={() => goDetail(item.id)}
@@ -49,7 +49,7 @@ const List = ({ theme, items }: ListProps) => {
                     maxValue={10}
                     styles={getStyles(item.vote_average)}
                   >
-                    <strong>{item.vote_average}</strong>
+                    <strong>{item.vote_average.toFixed(1)}</strong>
                   </CircularProgressbarWithChildren>
                 </div>
                 <h4 className="font-bold my-2 text-sm">

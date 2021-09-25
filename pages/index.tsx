@@ -4,7 +4,7 @@ import Head from "next/head";
 import { wrapper } from "./_app";
 import axios, { AxiosResponse } from "axios";
 /**@config */
-import { API_KEY } from "../config.json";
+import config from "../config.json";
 /**@components */
 import List from "../components/common/List";
 /**@types */
@@ -49,7 +49,7 @@ const Home: NextPage<any> = ({
       payload: keyword,
     });
     const res = await axios.get(
-      `https://api.themoviedb.org/3/search/multi?api_key=${API_KEY}&language=en-US&query=${keyword}&page=1&include_adult=false`
+      `https://api.themoviedb.org/3/search/multi?api_key=${config.API_KEY}&language=en-US&query=${keyword}&page=1&include_adult=false`
     );
     console.log(res);
 
@@ -96,16 +96,16 @@ const Home: NextPage<any> = ({
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async () => {
     const popular = await axios.get(
-      `https://api.themoviedb.org/3/movie/popular?api_key=a0d47ee72ddde5e72e4bbb4115a04d7e&language=ko-KR&page=1`
+      `https://api.themoviedb.org/3/movie/popular?api_key=${config.API_KEY}&language=ko-KR&page=1`
     );
     const nowPaying = await axios.get(
-      "https://api.themoviedb.org/3/movie/now_playing?api_key=a0d47ee72ddde5e72e4bbb4115a04d7e&language=ko-KR&page=1"
+      `https://api.themoviedb.org/3/movie/now_playing?api_key=${config.API_KEY}&language=ko-KR&page=1`
     );
     const freeToWatch = await axios.get(
-      "https://api.themoviedb.org/3/list/2?api_key=a0d47ee72ddde5e72e4bbb4115a04d7e&language=ko-KR"
+      `https://api.themoviedb.org/3/list/2?api_key=${config.API_KEY}&language=ko-KR`
     );
     const trend = await axios.get(
-      "https://api.themoviedb.org/3/trending/all/day?api_key=a0d47ee72ddde5e72e4bbb4115a04d7e&language=ko-KR"
+      `https://api.themoviedb.org/3/trending/all/day?api_key=${config.API_KEY}&language=ko-KR`
     );
 
     const arr = [

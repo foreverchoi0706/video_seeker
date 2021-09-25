@@ -4,7 +4,7 @@ interface CompaniesProps {
 
 const Companies = ({ items }: CompaniesProps) => {
   return (
-    <ul className=" grid grid-cols-3 justify-items-center gap-6">
+    <ul className=" grid grid-cols-auto-200 justify-around gap-6">
       {items.map((item) => (
         <li className="w-full flex flex-col items-center" key={item.id}>
           <img
