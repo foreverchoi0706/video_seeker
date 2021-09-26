@@ -1,4 +1,4 @@
-export default interface People {
+interface People {
     adult: boolean,
     gender: number,
     id: number,
@@ -7,4 +7,11 @@ export default interface People {
     name: string,
     popularity: number,
     profile_path: string
+}
+
+export default interface Peoples {
+    page: number,
+    total_results: number,
+    total_pages: number,
+    results: Array<People>
 }

@@ -1,12 +1,14 @@
 import { useRouter } from "next/router";
-import React, { memo, useCallback } from "react";
-import Movie from "../../types/Movie";
+import React, { useCallback } from "react";
+/**@types */
+import Multi from "../../types/Muti";
 
 interface SearchesProps {
-  items: Array<Movie> | null;
+  multi : Multi | null;
 }
 
-const Searches = ({ items }: SearchesProps) => {
+const Searches = ({ multi }: SearchesProps) => {
+  
   const router = useRouter();
 
   const goDetail = useCallback((id: number) => {
@@ -16,8 +18,8 @@ const Searches = ({ items }: SearchesProps) => {
   return (
     <div className="absolute w-full flex justify-center z-50 top-7">
       <ul className="bg-white w-4/6 grid grid-cols-auto-75 gap-2 justify-around py-2 rounded-b-md md:grid-cols-auto-150">
-        {items?.length
-          ? items.map((item) => (
+        {multi?.results.length
+          ? multi.results.map((item) => (
               <li key={item.id} onClick={() => goDetail(item.id)}>
                 {item.poster_path ? (
                   <img

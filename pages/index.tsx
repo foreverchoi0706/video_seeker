@@ -1,19 +1,24 @@
 import { useState, ChangeEvent, useEffect } from "react";
-import { GetStaticProps, NextPage } from "next";
+import { NextPage } from "next";
 import Head from "next/head";
-import { wrapper } from "./_app";
-import axios, { AxiosResponse } from "axios";
-/**@config */
-import config from "../config.json";
+import wrapper from "../wrapper";
 /**@components */
 import List from "../components/common/List";
 /**@types */
+import { RootState } from "../reducers/root";
 import Movie from "../types/Movie";
 import TvShow from "../types/TvShow";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Searches from "../components/list/Searches";
 /**@reducers */
-import { GET_TREND } from "../reducers/video";
+import {
+  getWhatsPopulars,
+  getTrends,
+  getMulti,
+  getNowPlayings,
+  getFreeToWatches,
+} from "../reducers/video";
+import { AsyncThunkAction } from "@reduxjs/toolkit";
 
 interface HomeProps {
   backdropPath: string;
@@ -30,31 +35,22 @@ const Home: NextPage<any> = ({
   freeToWatch,
   trend,
 }: HomeProps) => {
+  const { multi } = useSelector((root: RootState) => root.video);
+
   const dispatch = useDispatch();
 
   const [keyword, setKeyword] = useState<string>("");
 
-  const [res, setRes] = useState<Array<Movie> | null>([]);
-
   useEffect(() => {
+    if (!localStorage.getItem("lang")) localStorage.setItem("lang", "ko-KR");
     if (keyword) search();
   }, [keyword]);
 
   const inputKeyword = (e: ChangeEvent<HTMLInputElement>): void =>
     setKeyword(() => e.target.value);
 
-  const search = async (): Promise<any> => {
-    dispatch({
-      type: "SEARCH",
-      payload: keyword,
-    });
-    const res = await axios.get(
-      `https://api.themoviedb.org/3/search/multi?api_key=${config.API_KEY}&language=en-US&query=${keyword}&page=1&include_adult=false`
-    );
-    console.log(res);
-
-    setRes(res?.data.results);
-  };
+  const search = (): AsyncThunkAction<any, string, {}> =>
+    dispatch(getMulti(keyword));
 
   return (
     <article className="overflow-x-hidden">
@@ -82,7 +78,7 @@ const Home: NextPage<any> = ({
             value={keyword}
             onChange={inputKeyword}
           />
-          {keyword && <Searches items={res} />}
+          {keyword && <Searches multi={multi} />}
         </div>
       </section>
       <List theme="What's Popular" items={popular} />
@@ -95,34 +91,51 @@ const Home: NextPage<any> = ({
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async () => {
-    const popular = await axios.get(
-      `https://api.themoviedb.org/3/movie/popular?api_key=${config.API_KEY}&language=ko-KR&page=1`
-    );
-    const nowPaying = await axios.get(
-      `https://api.themoviedb.org/3/movie/now_playing?api_key=${config.API_KEY}&language=ko-KR&page=1`
-    );
-    const freeToWatch = await axios.get(
-      `https://api.themoviedb.org/3/list/2?api_key=${config.API_KEY}&language=ko-KR`
-    );
-    const trend = await axios.get(
-      `https://api.themoviedb.org/3/trending/all/day?api_key=${config.API_KEY}&language=ko-KR`
-    );
+    await Promise.all([
+      store.dispatch(getWhatsPopulars()),
+      store.dispatch(getNowPlayings()),
+      store.dispatch(getFreeToWatches()),
+      store.dispatch(getTrends()),
+    ]);
+
+    const { whatsPopulars, freeToWatches, nowPlayings, trends } =
+      store.getState().video;
+
+    // const arr = [
+    //   ...whatsPopulars!.results,
+    //   ...nowPlayings!.results,
+    //   ...freeToWatches!.items,
+    //   ...trends!.results,
+    // ];
+
+    //const random = Math.floor(Math.random() * arr.length);
+
+    // return {
+    //   props: {
+    //     backdropPath: arr[random].backdrop_path,
+    //     popular: whatsPopulars!.results,
+    //     nowPaying: nowPlayings!.results,
+    //     freeToWatch: freeToWatches!.items,
+    //     trend: trends!.results,
+    //   },
+    // };
 
     const arr = [
-      ...popular.data.results,
-      ...nowPaying.data.results,
-      ...freeToWatch.data.items,
-      ...trend.data.results,
+      ...whatsPopulars!.results,
+      ...nowPlayings!.results,
+
+      ...trends!.results,
     ];
 
     const random = Math.floor(Math.random() * arr.length);
+
     return {
       props: {
         backdropPath: arr[random].backdrop_path,
-        popular: popular.data.results,
-        nowPaying: nowPaying.data.results,
-        freeToWatch: freeToWatch.data.items,
-        trend: trend.data.results,
+        popular: whatsPopulars!.results,
+        nowPaying: nowPlayings!.results,
+
+        trend: trends!.results,
       },
     };
   }

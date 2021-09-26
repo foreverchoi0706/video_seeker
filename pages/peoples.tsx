@@ -1,22 +1,25 @@
-import { wrapper } from "./_app";
 import { useState, ChangeEvent, useEffect } from "react";
 import { NextPage } from "next";
+import { useRouter } from "next/router";
 import Head from "next/head";
-import { useDispatch } from "react-redux";
-import axios from "axios";
-/**@config */
-import config from "../config.json";
+import { useDispatch, useSelector } from "react-redux";
+import wrapper from "../wrapper";
 /**@types */
-import People from "../types/People";
+import { RootState } from "../reducers/root";
+import Peoples from "../types/Peoples";
 /**@reducers */
-import { GET_PEOPLES } from "../reducers/video";
+import { getPeoples } from "../reducers/video";
 
 interface PeoplesProps {
-  peoples: Array<People>;
+  peoples: Peoples;
 }
 
-const Peoples: NextPage<any> = ({ peoples }: PeoplesProps) => {
+const PeoplesPage: NextPage<any> = ({ peoples }: PeoplesProps) => {
+  const store = useSelector((root: RootState) => root.video);
+
   const dispatch = useDispatch();
+
+  const router = useRouter();
 
   const [keyword, setKeyword] = useState<string>("");
 
@@ -24,11 +27,21 @@ const Peoples: NextPage<any> = ({ peoples }: PeoplesProps) => {
     if (keyword) search(keyword);
   }, [keyword]);
 
+  useEffect(()=>{
+    console.log(store);
+    router.replace("/peoples");
+  },[store]);
+
   const inputKeyword = (e: ChangeEvent<HTMLInputElement>): void =>
     setKeyword(() => e.target.value);
 
   const search = async (keyword: string): Promise<any> =>
-    dispatch(GET_PEOPLES(keyword));
+    dispatch(getPeoples(1));
+
+
+  const test = () => {
+    dispatch(getPeoples(2));
+  }
 
   return (
     <article className="w-full">
@@ -44,34 +57,48 @@ const Peoples: NextPage<any> = ({ peoples }: PeoplesProps) => {
         />
       </section>
       <section className="grid grid-cols-auto-235 w-full gap-4 py-3 justify-center">
-        {peoples.map((item) => (
-          <div key={item.id} className="shadow-md rounded-b-md">
+        {peoples.results.map((item) => (
+          <div
+            key={item.id}
+            className="shadow-md rounded-b-md"
+            onClick={() => router.push(`/peoples/${item.id}`)}
+          >
             <div className="overflow-hidden rounded-t-md">
-              <img
-                className="poster"
-                src={`https://www.themoviedb.org/t/p/w235_and_h235_face/${item.profile_path}`}
-              />
+              {item.profile_path ? (
+                <img
+                  className="poster"
+                  src={`https://www.themoviedb.org/t/p/w235_and_h235_face/${item.profile_path}`}
+                />
+              ) : (
+                <img
+                  className="poster"
+                  src={`https://www.kindpng.com/picc/m/21-214439_free-high-quality-person-icon-default-profile-picture.png`}
+                />
+              )}
             </div>
             <strong className="block text-center">{item.name}</strong>
           </div>
         ))}
       </section>
-      <section className="flex justify-center my-4">1/2/3/4/5</section>
+      <section className="flex justify-center my-4">
+        <button>Pre</button>
+        {peoples.page}/{peoples.total_pages}
+        <button onClick={test}>Next</button>
+      </section>
     </article>
   );
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async () => {
-    const poeples = await axios.get(
-      `https://api.themoviedb.org/3/person/popular?api_key=${config.API_KEY}&language=en-US&page=1`
-    );
+    await store.dispatch(getPeoples(1));
+    const { peoples } = store.getState().video;
     return {
       props: {
-        peoples: poeples.data.results,
+        peoples
       },
     };
   }
 );
 
-export default Peoples;
+export default PeoplesPage;
