@@ -5,7 +5,7 @@ import axios from "axios";
 import Movie from "../types/Movie";
 import Peoples from "../types/Peoples";
 import Multi from "../types/Muti";
-import WhatsPopulars from "../types/whatsPopulars";
+import WhatsPopulars from "../types/WhatsPopulars";
 import NowPlayings from "../types/NowPlayings";
 import FreeToWatches from "../types/FreeToWatches";
 /**@config */
