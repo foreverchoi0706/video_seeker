@@ -21,8 +21,13 @@ body {
   background-color: lightgray;
   border-radius: 10px;
 }
+
 *::-webkit-scrollbar-track {
   background: none;
+}
+
+#reviews::-webkit-scrollbar {
+  display: none;
 }
 
 a {
@@ -38,7 +43,7 @@ a {
   animation: toggle 0.3s linear reverse;
 }
 
-.poster{
+.poster {
   cursor: pointer;
 }
 .poster:hover {

@@ -37,7 +37,7 @@ const Stars = ({ rating }: StarsProps) => {
 
 const Reviews = ({ items }: ReviewsProps) => {
   return (
-    <ul className="h-96 overflow-y-scroll rounded-md p-3 ">
+    <ul id="reviews" className="h-96 overflow-y-scroll rounded-md p-3 ">
       {items.map((item) => (
         <li key={item.id} className="p-3 my-3 rounded-md shadow-lg">
           <h3 className="font-bold flex items-center gap-1">

@@ -9,7 +9,7 @@ import { RootState } from "../reducers/root";
 import Movie from "../types/Movie";
 import TvShow from "../types/TvShow";
 import { useDispatch, useSelector } from "react-redux";
-import Searches from "../components/list/Searches";
+import Searched from "../components/list/Searched";
 /**@reducers */
 import {
   getWhatsPopulars,
@@ -78,7 +78,7 @@ const Home: NextPage<any> = ({
             value={keyword}
             onChange={inputKeyword}
           />
-          {keyword && <Searches multi={multi} />}
+          {keyword && <Searched multi={multi} />}
         </div>
       </section>
       <List theme="What's Popular" items={popular} />
