@@ -4,7 +4,7 @@ import { CircularProgressbarWithChildren } from "react-circular-progressbar";
 /**@types */
 import Movie from "../types/Movie";
 import TvShow from "../types/TvShow";
-/**@utilities */
+/**@util */
 import { getStyles, toSummary } from "../util";
 /**@components */
 import ListBtns from "./ListBtns";

@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
 import React, { useCallback } from "react";
 /**@types */
-import Multi from "../../types/Muti";
-import Peoples from "../../types/Peoples";
+import Multi from "../types/Muti";
+import Peoples from "../types/Peoples";
 
 interface SearchedProps {
   multi?: Multi | null;

@@ -5,8 +5,8 @@ import MovieDetail from "../../types/MovieDetail";
 import { LineProgressBar } from "@frogress/line";
 import { CircularProgressbarWithChildren } from "react-circular-progressbar";
 import { AiFillFire } from "react-icons/ai";
-/**@utilities */
-import { getStyles } from "../../utilities/common";
+/**@util */
+import { getStyles } from "../../util";
 /**@config */
 import { API_KEY } from "../../config.json";
 /**@components */

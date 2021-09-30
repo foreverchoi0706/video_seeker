@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { BsStar, BsStarFill } from "react-icons/bs";
 import { CgBoy } from "react-icons/cg";
 import { MdRateReview } from "react-icons/md";
-import { dateToString } from "../../utilities/common";
+import { dateToString } from "../util";
 
 interface StarsProps {
   rating: number;

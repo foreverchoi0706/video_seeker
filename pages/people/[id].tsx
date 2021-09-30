@@ -1,7 +1,6 @@
 import { ReactNode } from "react";
 import { GetServerSidePropsContext, NextPage } from "next";
 import wrapper from "../../wrapper";
-import { IconType } from "react-icons/lib";
 import { FaFacebook, FaInstagram, FaTwitter, FaHome } from "react-icons/fa";
 /**@types */
 import People from "../../types/People";
