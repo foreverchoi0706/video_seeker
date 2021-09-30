@@ -1,4 +1,4 @@
-interface TvShow {
+export default interface TvShow {
     genre_ids: Array<number>,
     original_name: string,
     origin_country: Array<string>,
@@ -16,5 +16,3 @@ interface TvShow {
     popularity: number,
     media_type: string
 }
-
-export default TvShow;

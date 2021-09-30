@@ -5,22 +5,21 @@ import Head from "next/head";
 import { useDispatch, useSelector } from "react-redux";
 import wrapper from "../wrapper";
 import { GrFormPrevious, GrFormNext } from "react-icons/gr";
-/**@components */
-import Searched from "../components/Searched";
 /**@types */
 import { RootState } from "../reducers/root";
 import Peoples from "../types/Peoples";
 /**@reducers */
 import { getPeoples, searchPeoples } from "../reducers/video";
+import Searched from "../components/Searched";
 /**@util */
 import { MAX, getNav } from "../util";
 
-interface PeoplesProps {
+interface TvShowsProps {
   peoples: Peoples;
   page: number;
 }
 
-const PeoplesPage: NextPage<any> = ({ peoples, page }: PeoplesProps) => {
+const TvShowsPage: NextPage<any> = ({ peoples, page }: TvShowsProps) => {
   const { searchedPeoples } = useSelector((root: RootState) => root.video);
 
   const dispatch = useDispatch();
@@ -143,4 +142,4 @@ export const getServerSideProps = wrapper.getServerSideProps(
   }
 );
 
-export default PeoplesPage;
+export default TvShowsPage;

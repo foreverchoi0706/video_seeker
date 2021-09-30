@@ -1,15 +1,15 @@
 import { useState, ChangeEvent, useEffect } from "react";
 import { NextPage } from "next";
 import Head from "next/head";
+import { useDispatch, useSelector } from "react-redux";
 import wrapper from "../wrapper";
 /**@components */
-import List from "../components/common/List";
+import List from "../components/List";
+import Searched from "../components/Searched";
 /**@types */
 import { RootState } from "../reducers/root";
 import Movie from "../types/Movie";
 import TvShow from "../types/TvShow";
-import { useDispatch, useSelector } from "react-redux";
-import Searched from "../components/list/Searched";
 /**@reducers */
 import {
   getWhatsPopulars,

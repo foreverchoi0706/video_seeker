@@ -15,12 +15,12 @@ import { getPeoples, searchPeoples } from "../reducers/video";
 /**@util */
 import { MAX, getNav } from "../util";
 
-interface PeoplesProps {
+interface MoviesPageProps {
   peoples: Peoples;
   page: number;
 }
 
-const PeoplesPage: NextPage<any> = ({ peoples, page }: PeoplesProps) => {
+const MoviesPage: NextPage<any> = ({ peoples, page }: MoviesPageProps) => {
   const { searchedPeoples } = useSelector((root: RootState) => root.video);
 
   const dispatch = useDispatch();
@@ -49,7 +49,7 @@ const PeoplesPage: NextPage<any> = ({ peoples, page }: PeoplesProps) => {
   return (
     <article className="w-full">
       <Head>
-        <title>Peoples</title>
+        <title>Movies</title>
       </Head>
       <section className="relative flex justify-center my-4">
         <input
@@ -143,4 +143,4 @@ export const getServerSideProps = wrapper.getServerSideProps(
   }
 );
 
-export default PeoplesPage;
+export default MoviesPage;

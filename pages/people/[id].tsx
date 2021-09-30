@@ -1,58 +1,143 @@
-import { GetServerSidePropsContext } from "next";
-import Head from "next/head";
-import axios from "axios";
-import MovieDetail from "../../types/MovieDetail";
-import { LineProgressBar } from "@frogress/line";
-import { CircularProgressbarWithChildren } from "react-circular-progressbar";
-import { AiFillFire } from "react-icons/ai";
+import { ReactNode } from "react";
+import { GetServerSidePropsContext, NextPage } from "next";
 import wrapper from "../../wrapper";
-/**@utilities */
-import { getStyles } from "../../utilities/common";
-/**@config */
-import { API_KEY } from "../../config.json";
-/**@components */
-import List from "../../components/common/List";
-import Companies from "../../components/list/Compaies";
-import Reviews from "../../components/list/Reviews";
-/**@styles */
-import "react-circular-progressbar/dist/styles.css";
+import { IconType } from "react-icons/lib";
+import { FaFacebook, FaInstagram, FaTwitter, FaHome } from "react-icons/fa";
 /**@types */
-import Movie from "../../types/Movie";
+import People from "../../types/People";
 /**@reducers */
-import { getPeople } from "../../reducers/video";
-import { useSelector } from "react-redux";
-import { RootState } from "../../reducers/root";
-import { useEffect } from "react";
+import {
+  getCombinedCredits,
+  getExternalIds,
+  getPeople,
+} from "../../reducers/video";
 
-interface DetailProps {
-  item: MovieDetail;
-  reviews: Array<any>;
-  similars: Array<Movie>;
+interface ExternalProps {
+  href: string;
+  children: ReactNode;
 }
 
-const Detail = ({}) => {
-  const { people } = useSelector((root: RootState) => root.video);
+const External = ({ href, children }: ExternalProps) => {
+  return (
+    <a href={href} target="_blank" rel="noreferrer">
+      {children}
+    </a>
+  );
+};
 
+interface PeopleProps {
+  people: People;
+  externalIds: any;
+}
 
-  return <article className="overflow-x-hidden">
-    {JSON.stringify(people)}
-  </article>;
+const PeoplePage: NextPage<any> = ({ people, externalIds }: PeopleProps) => {
+  return (
+    <article className="flex gap-4 p-4 w-full">
+      <section className="w-1/4">
+        <img
+          className="rounded-md"
+          alt={people.name}
+          src={`https://www.themoviedb.org/t/p/w300_and_h450_bestv2/${people.profile_path}`}
+        />
+        <div className="my-4 flex justify-around">
+          {externalIds.facebook_mid && (
+            <External href={`https://facebook.com/${externalIds.facebook_mid}`}>
+              <FaFacebook />
+            </External>
+          )}
+          {externalIds.facebook_id && (
+            <External href={`https://facebook.com/${externalIds.facebook_id}`}>
+              <FaFacebook />
+            </External>
+          )}
+          {externalIds.twitter_id && (
+            <External href={`https://twitter.com/${externalIds.twitter_id}`}>
+              <FaTwitter />
+            </External>
+          )}
+          {externalIds.instagram_id && (
+            <External
+              href={`https://www.instagram.com/${externalIds.instagram_id}`}
+            >
+              <FaInstagram />
+            </External>
+          )}
+          {people.homepage && (
+            <External href={people.homepage}>
+              <FaHome />
+            </External>
+          )}
+        </div>
+        <ul>
+          <li className="my-4">
+            <strong>Known For</strong>
+            <div className="pl-2">{people.known_for_department}</div>
+          </li>
+          <li className="my-4">
+            <strong>Known Credits</strong>
+          </li>
+          <li className="my-4">
+            <strong>Gender</strong>
+            <div className="pl-2">{people.gender === 1 ? "FEMAL" : "MALE"}</div>
+          </li>
+          <li className="my-4">
+            <strong>Birthday</strong>
+            <div className="pl-2">{people.birthday}</div>
+          </li>
+          <li className="my-4">
+            <strong>Place of Birth</strong>
+            <div className="pl-2">{people.place_of_birth}</div>
+          </li>
+          <li className="my-4">
+            <strong>Also Known As</strong>
+            <ul className="pl-2">
+              {people.also_known_as.map((item, index) => (
+                <li key={index}>{item}</li>
+              ))}
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <section className="w-3/4">
+        <h2 className="text-3xl my-6 font-bold">{people.name}</h2>
+        <div>
+          <h3 className="font-bold">Biography</h3>
+          <div className="text-sm">{people.biography}</div>
+        </div>
+
+        <div>
+          <h3 className="font-bold">Known For</h3>
+        </div>
+
+        <div>
+          <h3 className="font-bold">Acting</h3>
+        </div>
+      </section>
+    </article>
+  );
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
-  (store) => async (context) => {
+  (store) => async (context: GetServerSidePropsContext) => {
     const { id } = context.query;
-    if (id) {
-      await store.dispatch(getPeople(id.toString()));
-      return {
-        props: {},
-      };
-    } else {
-    }
+
+    await Promise.all([
+      store.dispatch(getPeople(id!.toString())),
+      store.dispatch(getExternalIds(id!.toString())),
+      store.dispatch(getCombinedCredits(id!.toString())),
+    ]);
+
+    const { people, externalIds, combinedCredits } = store.getState().video;
+
     return {
-      props: {},
+      props: {
+        people,
+        externalIds,
+        combinedCredits,
+      },
     };
   }
 );
 
-export default Detail;
+export default PeoplePage;

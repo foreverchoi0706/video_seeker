@@ -10,13 +10,15 @@ import { getStyles } from "../../utilities/common";
 /**@config */
 import { API_KEY } from "../../config.json";
 /**@components */
-import List from "../../components/common/List";
-import Companies from "../../components/list/Compaies";
-import Reviews from "../../components/list/Reviews";
+import List from "../../components/List";
+import Companies from "../../components/Compaies";
+import Reviews from "../../components/Reviews";
 /**@styles */
 import "react-circular-progressbar/dist/styles.css";
 /**@types */
 import Movie from "../../types/Movie";
+/**@reducers */
+import {} from "../../reducers/video";
 
 interface DetailProps {
   item: MovieDetail;

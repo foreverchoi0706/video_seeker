@@ -2,12 +2,12 @@ import React, { memo, useCallback } from "react";
 import { useRouter } from "next/router";
 import { CircularProgressbarWithChildren } from "react-circular-progressbar";
 /**@types */
-import Movie from "../../types/Movie";
-import TvShow from "../../types/TvShow";
+import Movie from "../types/Movie";
+import TvShow from "../types/TvShow";
 /**@utilities */
-import { getStyles, toSummary } from "../../utilities/common";
+import { getStyles, toSummary } from "../util";
 /**@components */
-import ListBtns from "../button/ListBtns";
+import ListBtns from "./ListBtns";
 
 interface ListProps {
   theme?: string;
