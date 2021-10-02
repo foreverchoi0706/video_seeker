@@ -16,14 +16,14 @@ import Reviews from "../../components/Reviews";
 /**@styles */
 import "react-circular-progressbar/dist/styles.css";
 /**@types */
-import Movie from "../../types/Movie";
+import Movies from "../../types/Movies";
 /**@reducers */
 import {} from "../../reducers/video";
 
 interface DetailProps {
   item: MovieDetail;
   reviews: Array<any>;
-  similars: Array<Movie>;
+  similars: Movies;
 }
 
 const Detail = ({ item, reviews, similars }: DetailProps) => {
@@ -100,9 +100,9 @@ const Detail = ({ item, reviews, similars }: DetailProps) => {
         </section>
       ) : null}
 
-      {similars.length ? (
+      {similars.results.length ? (
         <section className="my-6 border-gray-500 border-2">
-          <List items={similars} />
+          <List movies={similars} />
         </section>
       ) : null}
     </article>

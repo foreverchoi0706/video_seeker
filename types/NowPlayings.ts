@@ -1,5 +1,5 @@
-import Movie from "./Movie";
-import TvShow from "./TvShow";
+import { Movie } from "./Movies";
+import { TvShow } from "./TvShows";
 
 export default interface NowPlayings {
     page: number,

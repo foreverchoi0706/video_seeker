@@ -39,7 +39,7 @@ const Gnb = () => {
         <li className="text-center flex-1">
           <strong
             className="cursor-pointer"
-            onClick={() => router.push("/peoples?page=1")}
+            onClick={() => router.push("/peoples/?page=1")}
           >
             PEOPLES
           </strong>

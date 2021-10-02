@@ -2,21 +2,23 @@ import React, { memo, useCallback } from "react";
 import { useRouter } from "next/router";
 import { CircularProgressbarWithChildren } from "react-circular-progressbar";
 /**@types */
-import Movie from "../types/Movie";
-import TvShow from "../types/TvShow";
+import Movies from "../types/Movies";
+import TvShows from "../types/TvShows";
+import { Cast } from "../types/CombinedCredits";
 /**@util */
 import { getStyles, toSummary } from "../util";
 /**@components */
 import ListBtns from "./ListBtns";
+import Poster from "../components/Poster";
 
 interface ListProps {
   theme?: string;
-  items: Array<Movie | TvShow>;
+  movies?: Movies;
+  tvShows?: TvShows;
+  cast?: Array<Cast>;
 }
 
-const LIMIT: number = 13;
-
-const List = ({ theme, items }: ListProps) => {
+const List = ({ theme, movies, tvShows, cast }: ListProps) => {
   const router = useRouter();
 
   const goDetail = useCallback((id: number) => {
@@ -30,8 +32,39 @@ const List = ({ theme, items }: ListProps) => {
         <ListBtns theme={theme!} />
       </h3>
       <ul className="flex gap-3 overflow-x-scroll">
-        {items && items.length
-          ? items.map((item) => (
+        {movies && movies.results.length
+          ? movies.results.map((item) => (
+              <li className="relative" key={item.id}>
+                <div className="w-52 overflow-hidden rounded-md">
+                  <img
+                    alt="poster"
+                    className="poster h-4/5 w-full "
+                    loading="lazy"
+                    src={`https://www.themoviedb.org/t/p/w220_and_h330_face/${item.poster_path}`}
+                    onClick={() => goDetail(item.id)}
+                  />
+                </div>
+                <div className="absolute -right-3 text-white bottom-12 w-10 h-10 z-10">
+                  <CircularProgressbarWithChildren
+                    background={true}
+                    value={item.vote_average}
+                    maxValue={10}
+                    styles={getStyles(item.vote_average)}
+                  >
+                    <strong>{item.vote_average.toFixed(1)}</strong>
+                  </CircularProgressbarWithChildren>
+                </div>
+                <h4 className="font-bold my-2 text-sm text-center">
+                  {item.title && toSummary(item.title)}
+                </h4>
+                <h4 className="font-bold my-2 text-sm text-center">
+                  {item.release_date}
+                </h4>
+              </li>
+            ))
+          : null}
+        {tvShows && tvShows.results.length
+          ? tvShows.results.map((item) => (
               <li className="relative" key={item.id}>
                 <div className="w-52 overflow-hidden rounded-md">
                   <img
@@ -53,12 +86,39 @@ const List = ({ theme, items }: ListProps) => {
                   </CircularProgressbarWithChildren>
                 </div>
                 <h4 className="font-bold my-2 text-sm">
-                  {item.title && toSummary(item.title, LIMIT)}
-                  {item.name && toSummary(item.name, LIMIT)}
+                  {item.name && toSummary(item.name)}
                 </h4>
                 <h4 className="font-bold my-2 text-sm">
-                  {item.release_date}
                   {item.first_air_date}
+                </h4>
+              </li>
+            ))
+          : null}
+
+        {cast && cast.length
+          ? cast.map((item) => (
+              <li className="relative" key={item.id}>
+                <div className="w-52 overflow-hidden rounded-md">
+                  <img
+                    alt="poster"
+                    className="poster h-4/5 w-full "
+                    loading="lazy"
+                    src={`https://www.themoviedb.org/t/p/w220_and_h330_face/${item.poster_path}`}
+                    onClick={() => goDetail(item.id)}
+                  />
+                </div>
+                <div className="absolute -right-3 text-white bottom-12 w-10 h-10 z-10">
+                  {/* <CircularProgressbarWithChildren
+                    background={true}
+                    value={item.vote_average}
+                    maxValue={10}
+                    styles={getStyles(item.vote_average)}
+                  >
+                    <strong>{item.vote_average.toFixed(1)}</strong>
+                  </CircularProgressbarWithChildren> */}
+                </div>
+                <h4 className="font-bold my-2 text-sm">
+                  {item.name && toSummary(item.name)}
                 </h4>
               </li>
             ))

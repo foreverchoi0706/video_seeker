@@ -4,12 +4,18 @@ import wrapper from "../../wrapper";
 import { FaFacebook, FaInstagram, FaTwitter, FaHome } from "react-icons/fa";
 /**@types */
 import People from "../../types/People";
+import CombinedCredits from "../../types/CombinedCredits";
+import MovieCredits from "../../types/MovieCredits";
+/**@components */
+import List from "../../components/List";
 /**@reducers */
 import {
   getCombinedCredits,
   getExternalIds,
+  getMovieCredits,
   getPeople,
 } from "../../reducers/video";
+import { useRouter } from "next/router";
 
 interface ExternalProps {
   href: string;
@@ -27,9 +33,18 @@ const External = ({ href, children }: ExternalProps) => {
 interface PeopleProps {
   people: People;
   externalIds: any;
+  combinedCredits: CombinedCredits;
+  movieCredits: MovieCredits;
 }
 
-const PeoplePage: NextPage<any> = ({ people, externalIds }: PeopleProps) => {
+const PeoplePage: NextPage<any> = ({
+  people,
+  externalIds,
+  combinedCredits,
+  movieCredits,
+}: PeopleProps) => {
+  const router = useRouter();
+
   return (
     <article className="flex gap-4 p-4 w-full">
       <section className="w-1/4">
@@ -100,17 +115,25 @@ const PeoplePage: NextPage<any> = ({ people, externalIds }: PeopleProps) => {
 
       <section className="w-3/4">
         <h2 className="text-3xl my-6 font-bold">{people.name}</h2>
+        <div className="text-sm">{people.biography}</div>
+        <List cast={combinedCredits.cast} />
         <div>
-          <h3 className="font-bold">Biography</h3>
-          <div className="text-sm">{people.biography}</div>
-        </div>
-
-        <div>
-          <h3 className="font-bold">Known For</h3>
-        </div>
-
-        <div>
-          <h3 className="font-bold">Acting</h3>
+          {combinedCredits.cast.map((item) => (
+            <div
+              className="flex justify-between border-2 shadow-md rounded-md p-4 my-2 cursor-pointer hover:underline"
+              onClick={() => router.push(`/detail/${item.id}`)}
+            >
+              <div>
+                <strong>
+                  {item.original_title} {item.name}
+                </strong>
+                as {item.character}
+              </div>
+              <i>
+                {item.first_air_date} {item.release_date}
+              </i>
+            </div>
+          ))}
         </div>
       </section>
     </article>
@@ -125,15 +148,18 @@ export const getServerSideProps = wrapper.getServerSideProps(
       store.dispatch(getPeople(id!.toString())),
       store.dispatch(getExternalIds(id!.toString())),
       store.dispatch(getCombinedCredits(id!.toString())),
+      store.dispatch(getMovieCredits(id!.toString())),
     ]);
 
-    const { people, externalIds, combinedCredits } = store.getState().video;
+    const { people, externalIds, combinedCredits, movieCredits } =
+      store.getState().video;
 
     return {
       props: {
         people,
         externalIds,
         combinedCredits,
+        movieCredits,
       },
     };
   }

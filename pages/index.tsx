@@ -8,8 +8,8 @@ import List from "../components/List";
 import Searched from "../components/Searched";
 /**@types */
 import { RootState } from "../reducers/root";
-import Movie from "../types/Movie";
-import TvShow from "../types/TvShow";
+import Movie from "../types/Movies";
+import TvShow from "../types/TvShows";
 /**@reducers */
 import {
   getWhatsPopulars,
@@ -22,10 +22,10 @@ import { AsyncThunkAction } from "@reduxjs/toolkit";
 
 interface HomeProps {
   backdropPath: string;
-  popular: Array<Movie>;
-  nowPaying: Array<Movie>;
-  freeToWatch: Array<Movie>;
-  trend: Array<Movie | TvShow>;
+  popular: Movie & TvShow;
+  nowPaying: Movie & TvShow;
+  freeToWatch: Movie & TvShow;
+  trend: Movie & TvShow;
 }
 
 const Home: NextPage<any> = ({
@@ -81,10 +81,10 @@ const Home: NextPage<any> = ({
           {keyword && <Searched multi={multi} />}
         </div>
       </section>
-      <List theme="What's Popular" items={popular} />
-      <List theme="Now Playing" items={nowPaying} />
-      <List theme="Free To Watch" items={freeToWatch} />
-      <List theme="Trend" items={trend} />
+      <List theme="What's Popular" movies={popular} tvShows={popular} />
+      <List theme="Now Playing" movies={nowPaying} tvShows={nowPaying} />
+      <List theme="Free To Watch" movies={freeToWatch} tvShows={freeToWatch} />
+      <List theme="Trend" movies={trend} tvShows={trend} />
     </article>
   );
 };
@@ -123,7 +123,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
     const arr = [
       ...whatsPopulars!.results,
       ...nowPlayings!.results,
-
       ...trends!.results,
     ];
 
@@ -132,10 +131,9 @@ export const getServerSideProps = wrapper.getServerSideProps(
     return {
       props: {
         backdropPath: arr[random].backdrop_path,
-        popular: whatsPopulars!.results,
-        nowPaying: nowPlayings!.results,
-
-        trend: trends!.results,
+        popular: whatsPopulars,
+        nowPaying: nowPlayings,
+        trend: trends,
       },
     };
   }

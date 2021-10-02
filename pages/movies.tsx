@@ -4,24 +4,24 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import { useDispatch, useSelector } from "react-redux";
 import wrapper from "../wrapper";
-import { GrFormPrevious, GrFormNext } from "react-icons/gr";
 /**@components */
 import Searched from "../components/Searched";
+import Poster from "../components/Poster";
+import Remote from "../components/Remote";
 /**@types */
 import { RootState } from "../reducers/root";
-import Peoples from "../types/Peoples";
+import Movies from "../types/Movies";
+import TvShows from "../types/TvShows";
 /**@reducers */
-import { getPeoples, searchPeoples } from "../reducers/video";
-/**@util */
-import { MAX, getNav } from "../util";
+import { getMovies, searchMovies } from "../reducers/video";
 
 interface MoviesPageProps {
-  peoples: Peoples;
-  page: number;
+  movies: Movies;
+  div: string;
 }
 
-const MoviesPage: NextPage<any> = ({ peoples, page }: MoviesPageProps) => {
-  const { searchedPeoples } = useSelector((root: RootState) => root.video);
+const MoviesPage: NextPage<any> = ({ movies, div }: MoviesPageProps) => {
+  const { searched } = useSelector((root: RootState) => root.video);
 
   const dispatch = useDispatch();
 
@@ -38,13 +38,13 @@ const MoviesPage: NextPage<any> = ({ peoples, page }: MoviesPageProps) => {
     []
   );
 
-  const search = async (keyword: string): Promise<any> =>
-    dispatch(searchPeoples(keyword));
-
   const goPage = useCallback(
-    (page: number) => router.replace(`/peoples?page=${page}`),
+    (page: number) => router.replace(`/movies?page=${page}`),
     []
   );
+
+  const search = async (keyword: string): Promise<any> =>
+  dispatch(searchMovies(keyword));
 
   return (
     <article className="w-full">
@@ -58,71 +58,14 @@ const MoviesPage: NextPage<any> = ({ peoples, page }: MoviesPageProps) => {
           placeholder="keyword"
           onChange={inputKeyword}
         />
-        {keyword && <Searched peoples={searchedPeoples} />}
+        {keyword && <Searched movies={searched} />}
       </section>
       <section className="grid-cols-auto-150 grid w-full gap-4 py-3 justify-center md:grid-cols-auto-235">
-        {peoples!.results.map((item) => (
-          <div
-            key={item.id}
-            className="shadow-md rounded-b-md"
-            onClick={() => router.push(`/people/${item.id}`)}
-          >
-            <div className="overflow-hidden rounded-t-md">
-              {item.profile_path ? (
-                <img
-                  loading="lazy"
-                  className="poster"
-                  src={`https://www.themoviedb.org/t/p/w235_and_h235_face/${item.profile_path}`}
-                />
-              ) : (
-                <img
-                  loading="lazy"
-                  className="poster"
-                  src="https://www.kindpng.com/picc/m/21-214439_free-high-quality-person-icon-default-profile-picture.png"
-                />
-              )}
-            </div>
-            <strong className="block text-center">{item.name}</strong>
-          </div>
+        {movies.results.map((item) => (
+          <Poster item={item} />
         ))}
       </section>
-      <section className="flex justify-center items-center gap-2 my-4">
-        {peoples!.page >= MAX && (
-          <button
-            onClick={() => goPage(1)}
-            className="border-2 border-gray-500 rounded-md px-2 text-sm"
-          >
-            1..
-          </button>
-        )}
-        {peoples!.page > 1 && (
-          <GrFormPrevious
-            className="cursor-pointer"
-            onClick={() => goPage(+page - 1)}
-          />
-        )}
-        {getNav(peoples!.page, peoples!.total_pages).map((item, index) => (
-          <button
-            key={index}
-            onClick={() => goPage(item + 1)}
-            className={`${
-              item + 1 == peoples!.page && "font-bold underline"
-            } border-2 border-gray-500 rounded-md px-2 text-sm`}
-          >
-            {item + 1}
-          </button>
-        ))}
-        <GrFormNext
-          className="cursor-pointer"
-          onClick={() => goPage(+page + 1)}
-        />
-        <button
-          onClick={() => goPage(500)}
-          className="border-2 border-gray-500 rounded-md px-2 text-sm"
-        >
-          ..500
-        </button>
-      </section>
+      <Remote list={movies} goPage={goPage}/>
     </article>
   );
 };
@@ -131,13 +74,19 @@ export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (context) => {
     const { page } = context.query;
 
-    await store.dispatch(getPeoples(page!.toString()));
+    await store.dispatch(
+      getMovies({
+        page: page!.toString(),
+        div: "popular",
+      })
+    );
 
-    const { peoples } = store.getState().video;
+    const { movies } = store.getState().video;
     return {
       props: {
-        peoples,
+        movies,
         page,
+        div: "popular",
       },
     };
   }

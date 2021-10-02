@@ -2,9 +2,11 @@ import { AnyAction, Reducer } from "redux";
 import { createAsyncThunk, createReducer, } from "@reduxjs/toolkit";
 import axios from "axios";
 /**@types */
-import Movie from "../types/Movie";
+import Movies from "../types/Movies";
+import TvShows from "../types/TvShows";
 import Peoples from "../types/Peoples";
 import People from "../types/People";
+import MovieCredits from "../types/MovieCredits";
 import CombinedCredits from "../types/CombinedCredits";
 import Multi from "../types/Muti";
 import WhatsPopulars from "../types/WhatsPopulars";
@@ -13,7 +15,6 @@ import FreeToWatches from "../types/FreeToWatches";
 import Reviews from "../types/Reviews";
 /**@config */
 import config from "../config.json";
-import TvShow from "../types/TvShow";
 
 const BASE_URL = "https://api.themoviedb.org/3";
 
@@ -33,7 +34,19 @@ export const getFreeToWatches = createAsyncThunk("GET_FREE_TO_WATCHES", async ()
 
 export const getNowPlayings = createAsyncThunk("GET_NOW_PLAYINGS", async () => (await instance.get(`/movie/now_playing?&page=1`)).data);
 
-export const getTrends = createAsyncThunk("GET_TREND", async () => (await instance.get(`/trending/all/day`)).data);
+export const getTrends = createAsyncThunk("GET_TRENDS", async () => (await instance.get(`/trending/all/day`)).data);
+
+export const getMovies = createAsyncThunk("GET_MOVIES", async ({ page, div }: any) => (await instance.get(`/movie/${div}?page=${page}`)).data);
+
+export const searchMovies = createAsyncThunk("SEARCH_MOVIES", async (keyword: string) => (await instance.get(`/search/movie?query=${keyword}`)).data);
+
+export const getMovie = createAsyncThunk("GET_MOVIE", async (id: string) => (await instance.get(`/movie/${id}`)).data);
+
+export const getTvShows = createAsyncThunk("GET_TV_SHOWS", async ({ page, div }: any) => (await instance.get(`/tv/${div}?S&page=${page}`)).data);
+
+export const searchTvShows = createAsyncThunk("SEARCH_TV_SHOWS", async (keyword: string) => (await instance.get(`/search/tv?query=${keyword}`)).data);
+
+export const getTvShow = createAsyncThunk("GET_TV_SHOW", async (id: string) => (await instance.get(`/tv/${id}`)).data);
 
 export const getPeoples = createAsyncThunk("GET_PEOPLES", async (page: string = "1") => (await instance.get(`/person/popular?&page=${page}`)).data);
 
@@ -43,28 +56,27 @@ export const getPeople = createAsyncThunk("GET_PEOPLE", async (id: string) => aw
 
 export const getExternalIds = createAsyncThunk("GET_EXTERNAL_IDS", async (id: string) => await (await instance.get(`/person/${id}/external_ids`)).data);
 
-export const getCombinedCredits = createAsyncThunk("GET_COMBINDED_CREDITS", async (id: string) => (await instance.get(`/`)).data);
+export const getMovieCredits = createAsyncThunk("GET_MOVIE_CREDITS", async (id: string) => await (await instance.get(`/person/${id}/movie_credits`)).data);
+
+export const getCombinedCredits = createAsyncThunk("GET_COMBINDED_CREDITS", async (id: string) => (await instance.get(`/person/${id}/combined_credits`)).data);
 
 export const getReviews = createAsyncThunk("GET_REVIEWS", async (id: string) => await (await instance.get(`/movie/${id}/reviews?page=1`)).data);
-
-export const getMovie = createAsyncThunk("GET_MOVIE", async (id: string) => (await instance.get(`/`)).data);
-
-export const getTvShow = createAsyncThunk("GET_TV_SHOW", async (id: string) => (await instance.get(`/`)).data);
 
 interface StateProps {
   multi: Multi | null,
   whatsPopulars: WhatsPopulars | null,
-  freeToWatches: Array<any> | null,
+  freeToWatches: FreeToWatches | null,
   nowPlayings: NowPlayings | null,
   trends: FreeToWatches | null,
+  movies: Movies | null,
+  tvShows: TvShows | null,
   peoples: Peoples | null,
   externalIds: any,
+  movieCredits: MovieCredits | null,
   combinedCredits: CombinedCredits | null,
-  searchedPeoples: Peoples | null,
+  searched:  Movies & TvShows & Peoples | null;
   people: People | null,
   reviews: Reviews | null,
-  movie: Movie | null,
-  tvShow: TvShow | null,
 }
 
 const initialState: StateProps = {
@@ -72,15 +84,16 @@ const initialState: StateProps = {
   whatsPopulars: null,
   freeToWatches: null,
   nowPlayings: null,
+  movies: null,
+  tvShows: null,
   trends: null,
   peoples: null,
   people: null,
   externalIds: null,
+  movieCredits: null,
   combinedCredits: null,
-  searchedPeoples: null,
+  searched: null,
   reviews: null,
-  movie: null,
-  tvShow: null,
 };
 
 const reducer: Reducer<StateProps, AnyAction> = createReducer(initialState, builder => {
@@ -94,16 +107,26 @@ const reducer: Reducer<StateProps, AnyAction> = createReducer(initialState, buil
     state.nowPlayings = payload;
   }).addCase(getTrends.fulfilled, (state, { payload }) => {
     state.trends = payload;
+  }).addCase(getMovies.fulfilled, (state, { payload }) => {
+    state.movies = payload;
+  }).addCase(searchMovies.fulfilled, (state, { payload }) => {
+    state.searched = payload;
+  }).addCase(getTvShows.fulfilled, (state, { payload }) => {
+    state.tvShows = payload;
+  }).addCase(searchTvShows.fulfilled, (state, { payload }) => {
+    state.searched = payload;
   }).addCase(getPeoples.fulfilled, (state, { payload }) => {
     state.peoples = payload;
+  }).addCase(getPeople.fulfilled, (state, { payload }) => {
+    state.people = payload;
   }).addCase(getExternalIds.fulfilled, (state, { payload }) => {
     state.externalIds = payload;
+  }).addCase(getMovieCredits.fulfilled, (state, { payload }) => {
+    state.movieCredits = payload;
   }).addCase(getCombinedCredits.fulfilled, (state, { payload }) => {
     state.combinedCredits = payload;
   }).addCase(searchPeoples.fulfilled, (state, { payload }) => {
-    state.searchedPeoples = payload;
-  }).addCase(getPeople.fulfilled, (state, { payload }) => {
-    state.people = payload;
+    state.searched = payload;
   }).addCase(getReviews.fulfilled, (state, { payload }) => {
     state.reviews = payload;
   });

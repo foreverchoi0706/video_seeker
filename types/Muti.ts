@@ -1,8 +1,8 @@
-import Movie from "./Movie";
+import Movies from "./Movies";
 
 export default interface Multi {
     page: number,
-    results: Array<Movie>,
+    results: Array<Movies>,
     total_results: number,
     total_page: number
 }

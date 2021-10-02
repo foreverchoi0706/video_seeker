@@ -2,6 +2,8 @@ import { buildStyles } from "react-circular-progressbar";
 
 export const MAX: number = 6;
 
+export const LIMIT: number = 13;
+
 export const getNav = (page: number, total_pages: number): Array<number> => {
     const half = MAX / 2;
     if (page - half <= 0) {
@@ -40,9 +42,9 @@ export const getStyles = (voteAverage: number) => {
     });
 };
 
-export const toSummary = (text: string, limit: number) => {
-    if (text && text.length > limit) {
-        return `${text.slice(0, limit)}...`;
+export const toSummary = (text: string) => {
+    if (text && text.length > LIMIT) {
+        return `${text.slice(0, LIMIT)}...`;
     }
     return text;
 };

@@ -1,15 +1,19 @@
+import React from "react";
 import { useRouter } from "next/router";
-import React, { useCallback } from "react";
 /**@types */
 import Multi from "../types/Muti";
 import Peoples from "../types/Peoples";
+import TvShows from "../types/TvShows";
+import Movies from "../types/Movies";
 
 interface SearchedProps {
   multi?: Multi | null;
-  peoples?: Peoples | null;
+  movies?: Movies & TvShows & Peoples | null;
+  tvShows?: Movies & TvShows & Peoples | null;
+  peoples?:  Movies & TvShows & Peoples | null;
 }
 
-const Searched = ({ multi, peoples }: SearchedProps) => {
+const Searched = ({ multi, movies, tvShows, peoples }: SearchedProps) => {
   const router = useRouter();
 
   return (
@@ -33,6 +37,48 @@ const Searched = ({ multi, peoples }: SearchedProps) => {
                 <div className="poster bg-gray-50 w-full h-full flex flex-col justify-center items-center text-center">
                   <strong>{item.original_title}</strong>
                   <strong>({item.release_date})</strong>
+                </div>
+              )}
+            </li>
+          ))}
+        {movies &&
+          movies.results.map((item) => (
+            <li
+              className="h-56"
+              key={item.id}
+              onClick={() => router.push(`/peoples/${item.id}`)}
+            >
+              {item.poster_path ? (
+                <img
+                  alt="poster"
+                  className="poster"
+                  loading="lazy"
+                  src={`https://www.themoviedb.org/t/p/w220_and_h330_face/${item.poster_path}`}
+                />
+              ) : (
+                <div className="poster bg-gray-100  w-full h-full flex flex-col justify-center items-center text-center">
+                  <strong>{item.title}</strong>
+                </div>
+              )}
+            </li>
+          ))}
+        {tvShows &&
+          tvShows.results.map((item) => (
+            <li
+              className="h-56"
+              key={item.id}
+              onClick={() => router.push(`/peoples/${item.id}`)}
+            >
+              {item.poster_path ? (
+                <img
+                  alt="poster"
+                  className="poster"
+                  loading="lazy"
+                  src={`https://www.themoviedb.org/t/p/w220_and_h330_face/${item.poster_path}`}
+                />
+              ) : (
+                <div className="poster bg-gray-100  w-full h-full flex flex-col justify-center items-center text-center">
+                  <strong>{item.name}</strong>
                 </div>
               )}
             </li>

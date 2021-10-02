@@ -4,24 +4,22 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import { useDispatch, useSelector } from "react-redux";
 import wrapper from "../wrapper";
-import { GrFormPrevious, GrFormNext } from "react-icons/gr";
 /**@components */
 import Searched from "../components/Searched";
+import Remote from "../components/Remote";
 /**@types */
 import { RootState } from "../reducers/root";
 import Peoples from "../types/Peoples";
 /**@reducers */
 import { getPeoples, searchPeoples } from "../reducers/video";
-/**@util */
-import { MAX, getNav } from "../util";
 
 interface PeoplesProps {
   peoples: Peoples;
-  page: number;
+  div: string;
 }
 
-const PeoplesPage: NextPage<any> = ({ peoples, page }: PeoplesProps) => {
-  const { searchedPeoples } = useSelector((root: RootState) => root.video);
+const PeoplesPage: NextPage<any> = ({ peoples, div }: PeoplesProps) => {
+  const { searched } = useSelector((root: RootState) => root.video);
 
   const dispatch = useDispatch();
 
@@ -58,7 +56,7 @@ const PeoplesPage: NextPage<any> = ({ peoples, page }: PeoplesProps) => {
           placeholder="keyword"
           onChange={inputKeyword}
         />
-        {keyword && <Searched peoples={searchedPeoples} />}
+        {keyword && <Searched peoples={searched} />}
       </section>
       <section className="grid-cols-auto-150 grid w-full gap-4 py-3 justify-center md:grid-cols-auto-235">
         {peoples!.results.map((item) => (
@@ -86,43 +84,7 @@ const PeoplesPage: NextPage<any> = ({ peoples, page }: PeoplesProps) => {
           </div>
         ))}
       </section>
-      <section className="flex justify-center items-center gap-2 my-4">
-        {peoples!.page >= MAX && (
-          <button
-            onClick={() => goPage(1)}
-            className="border-2 border-gray-500 rounded-md px-2 text-sm"
-          >
-            1..
-          </button>
-        )}
-        {peoples!.page > 1 && (
-          <GrFormPrevious
-            className="cursor-pointer"
-            onClick={() => goPage(+page - 1)}
-          />
-        )}
-        {getNav(peoples!.page, peoples!.total_pages).map((item, index) => (
-          <button
-            key={index}
-            onClick={() => goPage(item + 1)}
-            className={`${
-              item + 1 == peoples!.page && "font-bold underline"
-            } border-2 border-gray-500 rounded-md px-2 text-sm`}
-          >
-            {item + 1}
-          </button>
-        ))}
-        <GrFormNext
-          className="cursor-pointer"
-          onClick={() => goPage(+page + 1)}
-        />
-        <button
-          onClick={() => goPage(500)}
-          className="border-2 border-gray-500 rounded-md px-2 text-sm"
-        >
-          ..500
-        </button>
-      </section>
+      <Remote list={peoples} goPage={goPage} />
     </article>
   );
 };
