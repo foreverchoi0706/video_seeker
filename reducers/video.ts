@@ -61,7 +61,7 @@ export const getCombinedCredits = createAsyncThunk("GET_COMBINDED_CREDITS", asyn
 export const getReviews = createAsyncThunk("GET_REVIEWS", async (id: string) => await (await instance.get(`/movie/${id}/reviews?page=1`)).data);
 
 interface StateProps {
-  multi: Multi | null,
+  multi: Videos | null,
   whatsPopulars: Videos | null,
   freeToWatches: Videos | null,
   nowPlayings: Videos | null,

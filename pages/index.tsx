@@ -79,7 +79,7 @@ const Home: NextPage<any> = ({
             value={keyword}
             onChange={inputKeyword}
           />
-          {keyword && <Searched multi={multi} />}
+          {keyword && <Searched multi={multi!} />}
         </div>
       </section>
       <List theme="What's Popular" videos={popular} />
