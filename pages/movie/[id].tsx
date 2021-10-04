@@ -20,13 +20,13 @@ import Movies from "../../types/Movies";
 /**@reducers */
 import {} from "../../reducers/video";
 
-interface DetailProps {
+interface MoviePageProps {
   item: MovieDetail;
   reviews: Array<any>;
   similars: Movies;
 }
 
-const Detail = ({ item, reviews, similars }: DetailProps) => {
+const MoviePage = ({ item, reviews, similars }: MoviePageProps) => {
   return (
     <article className="overflow-x-hidden">
       <Head>
@@ -137,4 +137,4 @@ export const getServerSideProps = async (
   };
 };
 
-export default Detail;
+export default MoviePage;

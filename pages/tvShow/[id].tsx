@@ -19,14 +19,15 @@ import "react-circular-progressbar/dist/styles.css";
 import Movies from "../../types/Movies";
 /**@reducers */
 import {} from "../../reducers/video";
+import TvShows from "../../types/TvShows";
 
-interface DetailProps {
+interface TvShowPageProps {
   item: MovieDetail;
   reviews: Array<any>;
-  similars: Movies;
+  similars: TvShows;
 }
 
-const Detail = ({ item, reviews, similars }: DetailProps) => {
+const TvShowPage = ({ item, reviews, similars }: TvShowPageProps) => {
   return (
     <article className="overflow-x-hidden">
       <Head>
@@ -102,7 +103,7 @@ const Detail = ({ item, reviews, similars }: DetailProps) => {
 
       {similars.results.length ? (
         <section className="my-6 border-gray-500 border-2">
-          <List movies={similars} />
+          <List tvShows={similars} />
         </section>
       ) : null}
     </article>
@@ -115,15 +116,15 @@ export const getServerSideProps = async (
   const { id } = context.query;
 
   const detail = await axios.get(
-    `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=ko-KR`
+    `https://api.themoviedb.org/3/tv/${id}?api_key=${API_KEY}&language=ko-KR`
   );
 
   const reviews = await axios.get(
-    `https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${API_KEY}&page=1`
+    `https://api.themoviedb.org/3/tv/${id}/reviews?api_key=${API_KEY}&page=1`
   );
 
   const similars = await axios.get(
-    `https://api.themoviedb.org/3/movie/${id}/similar?api_key=${API_KEY}&language=ko-KR&page=1`
+    `https://api.themoviedb.org/3/tv/${id}/similar?api_key=${API_KEY}&language=ko-KR&page=1`
   );
 
   console.log(similars);
@@ -137,4 +138,4 @@ export const getServerSideProps = async (
   };
 };
 
-export default Detail;
+export default TvShowPage;

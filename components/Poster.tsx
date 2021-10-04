@@ -10,13 +10,14 @@ import { getStyles, toSummary } from "../util";
 interface PosterProps {
   // item: Movie | TvShow;
   item: any;
+  div?: string;
 }
 
-const Poster = ({ item }: PosterProps) => {
+const Poster = ({ item, div }: PosterProps) => {
   const router = useRouter();
 
   const goDetail = useCallback((id: number) => {
-    router.push(`/detail/${id}`);
+    router.push(`/${div}/${id}`);
   }, []);
 
   return (

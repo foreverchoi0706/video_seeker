@@ -8,9 +8,9 @@ import Movies from "../types/Movies";
 
 interface SearchedProps {
   multi?: Multi | null;
-  movies?: Movies & TvShows & Peoples | null;
-  tvShows?: Movies & TvShows & Peoples | null;
-  peoples?:  Movies & TvShows & Peoples | null;
+  movies?: (Movies & TvShows & Peoples) | null;
+  tvShows?: (Movies & TvShows & Peoples) | null;
+  peoples?: (Movies & TvShows & Peoples) | null;
 }
 
 const Searched = ({ multi, movies, tvShows, peoples }: SearchedProps) => {
@@ -46,7 +46,7 @@ const Searched = ({ multi, movies, tvShows, peoples }: SearchedProps) => {
             <li
               className="h-56"
               key={item.id}
-              onClick={() => router.push(`/peoples/${item.id}`)}
+              onClick={() => router.push(`/movie/${item.id}`)}
             >
               {item.poster_path ? (
                 <img
@@ -58,6 +58,7 @@ const Searched = ({ multi, movies, tvShows, peoples }: SearchedProps) => {
               ) : (
                 <div className="poster bg-gray-100  w-full h-full flex flex-col justify-center items-center text-center">
                   <strong>{item.title}</strong>
+                  <strong>({item.first_air_date})</strong>
                 </div>
               )}
             </li>
@@ -67,7 +68,7 @@ const Searched = ({ multi, movies, tvShows, peoples }: SearchedProps) => {
             <li
               className="h-56"
               key={item.id}
-              onClick={() => router.push(`/peoples/${item.id}`)}
+              onClick={() => router.push(`/tvShow/${item.id}`)}
             >
               {item.poster_path ? (
                 <img
@@ -79,6 +80,7 @@ const Searched = ({ multi, movies, tvShows, peoples }: SearchedProps) => {
               ) : (
                 <div className="poster bg-gray-100  w-full h-full flex flex-col justify-center items-center text-center">
                   <strong>{item.name}</strong>
+                  <strong>({item.first_air_date})</strong>
                 </div>
               )}
             </li>
@@ -88,7 +90,7 @@ const Searched = ({ multi, movies, tvShows, peoples }: SearchedProps) => {
             <li
               className="h-56"
               key={item.id}
-              onClick={() => router.push(`/peoples/${item.id}`)}
+              onClick={() => router.push(`/people/${item.id}`)}
             >
               {item.profile_path ? (
                 <img

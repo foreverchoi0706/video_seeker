@@ -62,7 +62,7 @@ const MoviesPage: NextPage<any> = ({ movies, div }: MoviesPageProps) => {
       </section>
       <section className="grid-cols-auto-150 grid w-full gap-4 py-3 justify-center md:grid-cols-auto-235">
         {movies.results.map((item) => (
-          <Poster item={item} />
+          <Poster item={item} div="movie" />
         ))}
       </section>
       <Remote list={movies} goPage={goPage}/>

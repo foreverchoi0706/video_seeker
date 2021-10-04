@@ -19,13 +19,14 @@ import {
   getFreeToWatches,
 } from "../reducers/video";
 import { AsyncThunkAction } from "@reduxjs/toolkit";
+import Videos from "../types/Video";
 
 interface HomeProps {
   backdropPath: string;
-  popular: Movie & TvShow;
-  nowPaying: Movie & TvShow;
-  freeToWatch: Movie & TvShow;
-  trend: Movie & TvShow;
+  popular: Videos;
+  nowPaying: Videos;
+  freeToWatch: Videos;
+  trend: Videos;
 }
 
 const Home: NextPage<any> = ({
@@ -81,10 +82,10 @@ const Home: NextPage<any> = ({
           {keyword && <Searched multi={multi} />}
         </div>
       </section>
-      <List theme="What's Popular" movies={popular} tvShows={popular} />
-      <List theme="Now Playing" movies={nowPaying} tvShows={nowPaying} />
-      <List theme="Free To Watch" movies={freeToWatch} tvShows={freeToWatch} />
-      <List theme="Trend" movies={trend} tvShows={trend} />
+      <List theme="What's Popular" videos={popular} />
+      <List theme="Now Playing" videos={nowPaying} />
+      <List theme="Free To Watch" videos={freeToWatch} />
+      <List theme="Trend" videos={trend} />
     </article>
   );
 };

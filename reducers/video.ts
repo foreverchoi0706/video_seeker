@@ -9,12 +9,10 @@ import People from "../types/People";
 import MovieCredits from "../types/MovieCredits";
 import CombinedCredits from "../types/CombinedCredits";
 import Multi from "../types/Muti";
-import WhatsPopulars from "../types/WhatsPopulars";
-import NowPlayings from "../types/NowPlayings";
-import FreeToWatches from "../types/FreeToWatches";
 import Reviews from "../types/Reviews";
 /**@config */
 import config from "../config.json";
+import Videos from "../types/Video";
 
 const BASE_URL = "https://api.themoviedb.org/3";
 
@@ -64,10 +62,10 @@ export const getReviews = createAsyncThunk("GET_REVIEWS", async (id: string) => 
 
 interface StateProps {
   multi: Multi | null,
-  whatsPopulars: WhatsPopulars | null,
-  freeToWatches: FreeToWatches | null,
-  nowPlayings: NowPlayings | null,
-  trends: FreeToWatches | null,
+  whatsPopulars: Videos | null,
+  freeToWatches: Videos | null,
+  nowPlayings: Videos | null,
+  trends: Videos | null,
   movies: Movies | null,
   tvShows: TvShows | null,
   peoples: Peoples | null,

@@ -38,7 +38,7 @@ const TvShowsPage: NextPage<any> = ({ tvShows, div }: TvShowsPageProps) => {
   );
 
   const goPage = useCallback(
-    (page: number) => router.replace(`/movies?page=${page}`),
+    (page: number) => router.replace(`/tvShows?page=${page}`),
     []
   );
 
@@ -61,7 +61,7 @@ const TvShowsPage: NextPage<any> = ({ tvShows, div }: TvShowsPageProps) => {
       </section>
       <section className="grid-cols-auto-150 grid w-full gap-4 py-3 justify-center md:grid-cols-auto-235">
         {tvShows.results.map((item) => (
-          <Poster item={item} />
+          <Poster item={item} div="tvShow" />
         ))}
       </section>
       <Remote list={tvShows} goPage={goPage} />
