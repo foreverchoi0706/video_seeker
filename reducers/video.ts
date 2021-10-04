@@ -66,13 +66,13 @@ interface StateProps {
   freeToWatches: Videos | null,
   nowPlayings: Videos | null,
   trends: Videos | null,
-  movies: Movies | null,
-  tvShows: TvShows | null,
+  movies: Videos | null,
+  tvShows: Videos | null,
   peoples: Peoples | null,
   externalIds: any,
   movieCredits: MovieCredits | null,
   combinedCredits: CombinedCredits | null,
-  searched:  Movies & TvShows & Peoples | null;
+  searched: any;
   people: People | null,
   reviews: Reviews | null,
 }

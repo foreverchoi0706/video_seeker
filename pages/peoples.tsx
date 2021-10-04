@@ -12,6 +12,7 @@ import { RootState } from "../reducers/root";
 import Peoples from "../types/Peoples";
 /**@reducers */
 import { getPeoples, searchPeoples } from "../reducers/video";
+import { nanoid } from "@reduxjs/toolkit";
 
 interface PeoplesProps {
   peoples: Peoples;
@@ -43,7 +44,7 @@ const PeoplesPage: NextPage<any> = ({ peoples, div }: PeoplesProps) => {
     (page: number) => router.replace(`/peoples?page=${page}`),
     []
   );
-
+      
   return (
     <article className="w-full">
       <Head>
@@ -61,7 +62,7 @@ const PeoplesPage: NextPage<any> = ({ peoples, div }: PeoplesProps) => {
       <section className="grid-cols-auto-150 grid w-full gap-4 py-3 justify-center md:grid-cols-auto-235">
         {peoples!.results.map((item) => (
           <div
-            key={item.id}
+            key={nanoid()}
             className="shadow-md rounded-b-md"
             onClick={() => router.push(`/people/${item.id}`)}
           >

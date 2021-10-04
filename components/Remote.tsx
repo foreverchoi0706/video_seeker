@@ -1,3 +1,4 @@
+import { nanoid } from "nanoid";
 import { useRouter } from "next/router";
 import React, { useCallback } from "react";
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
@@ -27,9 +28,9 @@ const Remote = ({ list, goPage }: RemoteProps) => {
           onClick={() => goPage(list.page - 1)}
         />
       )}
-      {getNav(list.page, list.total_pages).map((item, index) => (
+      {getNav(list.page, list.total_pages).map((item) => (
         <button
-          key={index}
+          key={nanoid()}
           onClick={() => goPage(item + 1)}
           className={`${
             item + 1 == list.page && "font-bold underline"

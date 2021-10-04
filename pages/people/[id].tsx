@@ -16,6 +16,7 @@ import {
   getPeople,
 } from "../../reducers/video";
 import { useRouter } from "next/router";
+import { nanoid } from "nanoid";
 
 interface ExternalProps {
   href: string;
@@ -46,43 +47,49 @@ const PeoplePage: NextPage<any> = ({
   const router = useRouter();
 
   return (
-    <article className="flex gap-4 p-4 w-full">
-      <section className="w-1/4">
-        <img
-          className="rounded-md"
-          alt={people.name}
-          src={`https://www.themoviedb.org/t/p/w300_and_h450_bestv2/${people.profile_path}`}
-        />
-        <div className="my-4 flex justify-around">
-          {externalIds.facebook_mid && (
-            <External href={`https://facebook.com/${externalIds.facebook_mid}`}>
-              <FaFacebook />
-            </External>
-          )}
-          {externalIds.facebook_id && (
-            <External href={`https://facebook.com/${externalIds.facebook_id}`}>
-              <FaFacebook />
-            </External>
-          )}
-          {externalIds.twitter_id && (
-            <External href={`https://twitter.com/${externalIds.twitter_id}`}>
-              <FaTwitter />
-            </External>
-          )}
-          {externalIds.instagram_id && (
-            <External
-              href={`https://www.instagram.com/${externalIds.instagram_id}`}
-            >
-              <FaInstagram />
-            </External>
-          )}
-          {people.homepage && (
-            <External href={people.homepage}>
-              <FaHome />
-            </External>
-          )}
+    <article className="flex flex-col gap-4 p-4 w-full md:flex-row">
+      <section className="flex gap-4 w-full md:block md:w-1/4">
+        <div>
+          <img
+            className="rounded-md"
+            alt={people.name}
+            src={`https://www.themoviedb.org/t/p/w300_and_h450_bestv2/${people.profile_path}`}
+          />
+          <div className="my-4 flex justify-around">
+            {externalIds.facebook_mid && (
+              <External
+                href={`https://facebook.com/${externalIds.facebook_mid}`}
+              >
+                <FaFacebook />
+              </External>
+            )}
+            {externalIds.facebook_id && (
+              <External
+                href={`https://facebook.com/${externalIds.facebook_id}`}
+              >
+                <FaFacebook />
+              </External>
+            )}
+            {externalIds.twitter_id && (
+              <External href={`https://twitter.com/${externalIds.twitter_id}`}>
+                <FaTwitter />
+              </External>
+            )}
+            {externalIds.instagram_id && (
+              <External
+                href={`https://www.instagram.com/${externalIds.instagram_id}`}
+              >
+                <FaInstagram />
+              </External>
+            )}
+            {people.homepage && (
+              <External href={people.homepage}>
+                <FaHome />
+              </External>
+            )}
+          </div>
         </div>
-        <ul>
+        <ul className="">
           <li className="my-4">
             <strong>Known For</strong>
             <div className="pl-2">{people.known_for_department}</div>
@@ -105,21 +112,22 @@ const PeoplePage: NextPage<any> = ({
           <li className="my-4">
             <strong>Also Known As</strong>
             <ul className="pl-2">
-              {people.also_known_as.map((item, index) => (
-                <li key={index}>{item}</li>
+              {people.also_known_as.map((item) => (
+                <li key={nanoid()}>{item}</li>
               ))}
             </ul>
           </li>
         </ul>
       </section>
 
-      <section className="w-3/4">
+      <section className="w-full md:w-3/4">
         <h2 className="text-3xl my-6 font-bold">{people.name}</h2>
         <div className="text-sm">{people.biography}</div>
         <List cast={combinedCredits.cast} />
         <div>
           {combinedCredits.cast.map((item) => (
             <div
+              key={item.id}
               className="flex justify-between border-2 shadow-md rounded-md p-4 my-2 cursor-pointer hover:underline"
               onClick={() => router.push(`/detail/${item.id}`)}
             >

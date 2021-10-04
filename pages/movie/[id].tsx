@@ -16,14 +16,13 @@ import Reviews from "../../components/Reviews";
 /**@styles */
 import "react-circular-progressbar/dist/styles.css";
 /**@types */
-import Movies from "../../types/Movies";
+import Videos from "../../types/Video";
 /**@reducers */
-import {} from "../../reducers/video";
 
 interface MoviePageProps {
   item: MovieDetail;
   reviews: Array<any>;
-  similars: Movies;
+  similars: Videos;
 }
 
 const MoviePage = ({ item, reviews, similars }: MoviePageProps) => {
@@ -47,18 +46,17 @@ const MoviePage = ({ item, reviews, similars }: MoviePageProps) => {
             className="rounded-lg w-60 h-96"
             src={`https://www.themoviedb.org/t/p/w220_and_h330_face/${item.poster_path}`}
           />
-          {/* <div className="absolute -bottom-20 w-11/12 right-0 rounded-md bg-white flex flex-col sm:static sm:bg-none"> */}
           <div className="flex flex-col">
             <h2 className="text-base mb-2 md:text-2xl">
-              {item.title} ({item.release_date || "예정"})<br />
+              {item.title} ({item.release_date || "unknown"})<br />
               <span className="italic">{item.tagline}</span>
             </h2>
 
             <h3>{item.adult && 19}</h3>
             <h3 className="text-xs mb-2 lg:text-sm">{item.overview}</h3>
             <ul className="flex gap-3 mb-2 text-xs lg:text-sm">
-              {item.genres.map((item) => (
-                <li key={item.id}>{item.name}</li>
+              {item.genres.map((genre) => (
+                <li key={genre.id}>{genre.name}</li>
               ))}
             </ul>
             <div className="flex gap-3 items-center mb-2">
@@ -102,7 +100,7 @@ const MoviePage = ({ item, reviews, similars }: MoviePageProps) => {
 
       {similars.results.length ? (
         <section className="my-6 border-gray-500 border-2">
-          <List movies={similars} />
+          <List videos={similars} />
         </section>
       ) : null}
     </article>

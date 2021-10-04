@@ -24,7 +24,11 @@ const Searched = ({ multi, movies, tvShows, peoples }: SearchedProps) => {
             <li
               className="h-56"
               key={item.id}
-              onClick={() => router.push(`/detail/${item.id}`)}
+              onClick={() =>
+                router.push(
+                  `/${item.original_title ? "movie" : "tvShow"}/${item.id}`
+                )
+              }
             >
               {item.poster_path ? (
                 <img

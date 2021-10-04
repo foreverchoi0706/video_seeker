@@ -4,18 +4,19 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import { useDispatch, useSelector } from "react-redux";
 import wrapper from "../wrapper";
+import { nanoid } from "nanoid";
 /**@components */
 import Searched from "../components/Searched";
 import Poster from "../components/Poster";
 import Remote from "../components/Remote";
 /**@types */
 import { RootState } from "../reducers/root";
-import TvShows from "../types/TvShows";
+import Videos from "../types/Video";
 /**@reducers */
 import { getTvShows, searchTvShows } from "../reducers/video";
 
 interface TvShowsPageProps {
-  tvShows: TvShows;
+  tvShows: Videos;
   div: string;
 }
 
@@ -61,7 +62,7 @@ const TvShowsPage: NextPage<any> = ({ tvShows, div }: TvShowsPageProps) => {
       </section>
       <section className="grid-cols-auto-150 grid w-full gap-4 py-3 justify-center md:grid-cols-auto-235">
         {tvShows.results.map((item) => (
-          <Poster item={item} div="tvShow" />
+          <Poster key={nanoid()} item={item} div="tvShow" />
         ))}
       </section>
       <Remote list={tvShows} goPage={goPage} />
