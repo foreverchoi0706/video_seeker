@@ -84,7 +84,7 @@ const Home: NextPage<any> = ({
       </section>
       <List theme="What's Popular" videos={popular} />
       <List theme="Now Playing" videos={nowPaying} />
-      <List theme="Free To Watch" videos={freeToWatch} />
+      {/* <List theme="Free To Watch" videos={freeToWatch} /> */}
       <List theme="Trend" videos={trend} />
     </article>
   );

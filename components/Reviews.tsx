@@ -28,7 +28,9 @@ const Stars = ({ rating }: StarsProps) => {
   if (rating) {
     return (
       <div className="flex gap-1">
-        {stars.map((item) => (item ? <BsStarFill /> : <BsStar />))}
+        {stars.map((item, index) =>
+          item ? <BsStarFill key={index} /> : <BsStar key={index} />
+        )}
       </div>
     );
   }
@@ -37,7 +39,7 @@ const Stars = ({ rating }: StarsProps) => {
 
 const Reviews = ({ items }: ReviewsProps) => {
   return (
-    <ul id="reviews" className="h-96 overflow-y-scroll rounded-md p-3 ">
+    <ul id="reviews" className="text-sm h-96 overflow-y-scroll rounded-md p-3 ">
       {items.map((item) => (
         <li key={item.id} className="p-3 my-3 rounded-md shadow-lg">
           <h3 className="font-bold flex items-center gap-1">
