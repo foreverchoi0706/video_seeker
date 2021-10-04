@@ -2,14 +2,12 @@ import { useRouter } from "next/router";
 import { useCallback } from "react";
 import { CircularProgressbarWithChildren } from "react-circular-progressbar";
 /**@types */
-import { Movie } from "../types/Movies";
-import { TvShow } from "../types/TvShows";
+import { Video } from "../types/Video";
 /**@util */
 import { getStyles, toSummary } from "../util";
 
 interface PosterProps {
-  // item: Movie | TvShow;
-  item: any;
+  item: Video;
   div?: string;
 }
 

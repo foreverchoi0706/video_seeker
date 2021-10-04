@@ -126,9 +126,7 @@ export const getServerSideProps = async (
   const similars = await axios.get(
     `https://api.themoviedb.org/3/tv/${id}/similar?api_key=${API_KEY}&language=ko-KR&page=1`
   );
-
-  console.log(similars);
-
+  
   return {
     props: {
       item: detail.data,

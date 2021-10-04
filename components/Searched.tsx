@@ -1,16 +1,16 @@
 import React from "react";
 import { useRouter } from "next/router";
 /**@types */
-import Multi from "../types/Muti";
-import Peoples from "../types/Peoples";
-import TvShows from "../types/TvShows";
+import Videos from "../types/Video";
 import Movies from "../types/Movies";
+import TvShows from "../types/TvShows";
+import Peoples from "../types/Peoples";
 
 interface SearchedProps {
-  multi?: Multi | null;
-  movies?: (Movies & TvShows & Peoples) | null;
-  tvShows?: (Movies & TvShows & Peoples) | null;
-  peoples?: (Movies & TvShows & Peoples) | null;
+  multi?: Videos;
+  movies?: Movies;
+  tvShows?: TvShows;
+  peoples?: Peoples;
 }
 
 const Searched = ({ multi, movies, tvShows, peoples }: SearchedProps) => {
@@ -58,7 +58,7 @@ const Searched = ({ multi, movies, tvShows, peoples }: SearchedProps) => {
               ) : (
                 <div className="poster bg-gray-100  w-full h-full flex flex-col justify-center items-center text-center">
                   <strong>{item.title}</strong>
-                  <strong>({item.first_air_date})</strong>
+                  <strong>({item.release_date})</strong>
                 </div>
               )}
             </li>
