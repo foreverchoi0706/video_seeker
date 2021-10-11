@@ -128,8 +128,7 @@ const PeoplePage: NextPage<any> = ({
           {combinedCredits.cast.map((item) => (
             <div
               key={item.id}
-              className="flex justify-between border-2 shadow-md rounded-md p-4 my-2 cursor-pointer hover:underline"
-              onClick={() => router.push(`/detail/${item.id}`)}
+              className="flex justify-between border-2 shadow-md rounded-md p-4 my-2"
             >
               <div>
                 <strong>

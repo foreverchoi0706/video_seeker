@@ -9,7 +9,9 @@ export const getNav = (page: number, total_pages: number): Array<number> => {
     if (page - half <= 0) {
         return Array.of(...new Array(MAX).keys());
     } else if (page >= total_pages - MAX) {
-        return Array.of(...new Array(MAX).keys());
+        return Array.of(...new Array(MAX)).map((_, index) => {
+            return page - (MAX - index);
+        });
     } else {
         return new Array(MAX).fill(page).map((item, index) => {
             if (index + 1 == half) {
@@ -24,7 +26,7 @@ export const getNav = (page: number, total_pages: number): Array<number> => {
 };
 
 export const getStyles = (voteAverage: number) => {
-    let pathColor = "	rgb(60,179,113)";
+    let pathColor = "rgb(60,179,113)";
     if (voteAverage < 7) {
         pathColor = "rgb(255,255,0)";
     } else if (voteAverage < 4) {
@@ -50,7 +52,7 @@ export const toSummary = (text: string) => {
 };
 
 export const dateToString = (date: Date) => {
-    return date.toString().slice(0,10);
+    return date.toString().slice(0, 10);
 }
 
 export default {};

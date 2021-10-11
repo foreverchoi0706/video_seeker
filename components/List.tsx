@@ -1,9 +1,8 @@
 import React, { memo, useCallback } from "react";
 import { useRouter } from "next/router";
 import { CircularProgressbarWithChildren } from "react-circular-progressbar";
+import { RiMovieLine } from "react-icons/ri";
 /**@types */
-import Movies from "../types/Movies";
-import TvShows from "../types/TvShows";
 import { Cast } from "../types/CombinedCredits";
 /**@util */
 import { getStyles, toSummary } from "../util";
@@ -36,13 +35,28 @@ const List = ({ theme, videos, cast }: ListProps) => {
           ? videos.results.map((item) => (
               <li className="relative" key={nanoid()}>
                 <div className="w-52 overflow-hidden rounded-md">
-                  <img
-                    alt="poster"
-                    className="poster h-4/5 w-full"
-                    loading="lazy"
-                    src={`https://www.themoviedb.org/t/p/w220_and_h330_face/${item.poster_path}`}
-                    onClick={() => goDetail(item.id, item.title ? "movie" : "tvShow")}
-                  />
+                {item.poster_path ? (
+                    <img
+                      alt="poster"
+                      className="poster"
+                      loading="lazy"
+                      src={`https://www.themoviedb.org/t/p/w220_and_h330_face/${item.poster_path}`}
+                      onClick={() =>
+                        goDetail(item.id, item.title ? "movie" : "tvShow")
+                      }
+                    />
+                  ) : (
+                    <RiMovieLine
+                      style={{
+                        height: "310px",
+                      }}
+                      className=" poster w-full"
+                      color="darkgrey"
+                      onClick={() =>
+                        goDetail(item.id, item.title ? "movie" : "tvShow")
+                      }
+                    />
+                  )}
                 </div>
                 <div className="absolute -right-3 text-white bottom-12 w-10 h-10 z-10">
                   <CircularProgressbarWithChildren
@@ -70,13 +84,28 @@ const List = ({ theme, videos, cast }: ListProps) => {
           ? cast.map((item) => (
               <li className="relative" key={nanoid()}>
                 <div className="w-52 overflow-hidden rounded-md">
-                  <img
-                    alt="poster"
-                    className="poster h-4/5 w-full "
-                    loading="lazy"
-                    src={`https://www.themoviedb.org/t/p/w220_and_h330_face/${item.poster_path}`}
-                    onClick={() => goDetail(item.id)}
-                  />
+                  {item.poster_path ? (
+                    <img
+                      alt="poster"
+                      className="poster"
+                      loading="lazy"
+                      src={`https://www.themoviedb.org/t/p/w220_and_h330_face/${item.poster_path}`}
+                      onClick={() =>
+                        goDetail(item.id, item.title ? "movie" : "tvShow")
+                      }
+                    />
+                  ) : (
+                    <RiMovieLine
+                      style={{
+                        height: "310px",
+                      }}
+                      className=" poster w-full"
+                      color="darkgrey"
+                      onClick={() =>
+                        goDetail(item.id, item.title ? "movie" : "tvShow")
+                      }
+                    />
+                  )}
                 </div>
                 <div className="absolute -right-3 text-white bottom-12 w-10 h-10 z-10">
                   <CircularProgressbarWithChildren

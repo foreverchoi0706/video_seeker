@@ -22,7 +22,7 @@ const Searched = ({ multi, movies, tvShows, peoples }: SearchedProps) => {
         {multi &&
           multi.results.map((item) => (
             <li
-              className="h-56"
+              className=""
               key={item.id}
               onClick={() =>
                 router.push(
@@ -38,20 +38,18 @@ const Searched = ({ multi, movies, tvShows, peoples }: SearchedProps) => {
                   src={`https://www.themoviedb.org/t/p/w220_and_h330_face/${item.poster_path}`}
                 />
               ) : (
-                <div className="poster bg-gray-50 w-full h-full flex flex-col justify-center items-center text-center">
+                <div className="poster bg-gray-50 w-full h-full flex flex-col justify-center items-center text-center text-xs">
                   <strong>{item.original_title}</strong>
-                  <strong>({item.release_date})</strong>
+                  <strong>{item.name}</strong>
+                  <strong>{item.release_date  && `(${item.release_date})`}</strong>
+                  <strong>{item.first_air_date  && `(${item.first_air_date})`}</strong>
                 </div>
               )}
             </li>
           ))}
         {movies &&
           movies.results.map((item) => (
-            <li
-              className="h-56"
-              key={item.id}
-              onClick={() => router.push(`/movie/${item.id}`)}
-            >
+            <li key={item.id} onClick={() => router.push(`/movie/${item.id}`)}>
               {item.poster_path ? (
                 <img
                   alt="poster"
@@ -60,7 +58,7 @@ const Searched = ({ multi, movies, tvShows, peoples }: SearchedProps) => {
                   src={`https://www.themoviedb.org/t/p/w220_and_h330_face/${item.poster_path}`}
                 />
               ) : (
-                <div className="poster bg-gray-100  w-full h-full flex flex-col justify-center items-center text-center">
+                <div className="poster bg-gray-100  w-full h-full flex flex-col justify-center items-center text-center text-xs">
                   <strong>{item.title}</strong>
                   <strong>({item.release_date})</strong>
                 </div>
@@ -70,7 +68,6 @@ const Searched = ({ multi, movies, tvShows, peoples }: SearchedProps) => {
         {tvShows &&
           tvShows.results.map((item) => (
             <li
-              className="h-56"
               key={item.id}
               onClick={() => router.push(`/tvShow/${item.id}`)}
             >
@@ -82,20 +79,16 @@ const Searched = ({ multi, movies, tvShows, peoples }: SearchedProps) => {
                   src={`https://www.themoviedb.org/t/p/w220_and_h330_face/${item.poster_path}`}
                 />
               ) : (
-                <div className="poster bg-gray-100  w-full h-full flex flex-col justify-center items-center text-center">
+                <div className="poster bg-gray-100  w-full h-full flex flex-col justify-center items-center text-center text-xs">
                   <strong>{item.name}</strong>
-                  <strong>({item.first_air_date})</strong>
+                  <strong>{item.first_air_date && `(${item.first_air_date})`}</strong>
                 </div>
               )}
             </li>
           ))}
         {peoples &&
           peoples.results.map((item) => (
-            <li
-              className="h-56"
-              key={item.id}
-              onClick={() => router.push(`/people/${item.id}`)}
-            >
+            <li key={item.id} onClick={() => router.push(`/people/${item.id}`)}>
               {item.profile_path ? (
                 <img
                   alt="poster"
@@ -104,7 +97,7 @@ const Searched = ({ multi, movies, tvShows, peoples }: SearchedProps) => {
                   src={`https://www.themoviedb.org/t/p/w220_and_h330_face/${item.profile_path}`}
                 />
               ) : (
-                <div className="poster bg-gray-100  w-full h-full flex flex-col justify-center items-center text-center">
+                <div className="poster bg-gray-100  w-full h-full flex flex-col justify-center items-center text-center text-xs">
                   <strong>{item.name}</strong>
                 </div>
               )}

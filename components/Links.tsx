@@ -17,7 +17,7 @@ const Links = () => {
         />
       </li>
       <li className="cursor-pointer">
-        <GiHumanTarget size={33} onClick={() => {}} />
+        <GiHumanTarget size={33} onClick={() => alert("준비중...")} />
       </li>
     </ul>
   );

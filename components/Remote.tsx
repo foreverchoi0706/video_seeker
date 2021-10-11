@@ -1,6 +1,5 @@
 import { nanoid } from "nanoid";
-import { useRouter } from "next/router";
-import React, { useCallback } from "react";
+import React from "react";
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 import { getNav, MAX } from "../util";
 
@@ -10,8 +9,6 @@ interface RemoteProps {
 }
 
 const Remote = ({ list, goPage }: RemoteProps) => {
-  const router = useRouter();
-
   return (
     <section className="flex justify-center items-center gap-2 my-4">
       {list!.page >= MAX && (
@@ -39,16 +36,21 @@ const Remote = ({ list, goPage }: RemoteProps) => {
           {item + 1}
         </button>
       ))}
-      <GrFormNext
-        className="cursor-pointer"
-        onClick={() => goPage(list.page + 1)}
-      />
-      <button
-        onClick={() => goPage(500)}
-        className="border-2 border-gray-500 rounded-md px-2 text-sm"
-      >
-        ..500
-      </button>
+      {list!.page != 500 && (
+        <GrFormNext
+          className="cursor-pointer"
+          onClick={() => goPage(list.page + 1)}
+        />
+      )}
+
+      {list!.page < 500 - MAX && (
+        <button
+          onClick={() => goPage(500)}
+          className="border-2 border-gray-500 rounded-md px-2 text-sm"
+        >
+          ..500
+        </button>
+      )}
     </section>
   );
 };
