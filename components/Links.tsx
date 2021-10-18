@@ -17,7 +17,7 @@ const Links = () => {
         />
       </li>
       <li className="cursor-pointer">
-        <GiHumanTarget size={33} onClick={() => alert("준비중...")} />
+        <GiHumanTarget size={33} onClick={() => window.open("https://me.foreverchoi.vercel.app")} />
       </li>
     </ul>
   );
