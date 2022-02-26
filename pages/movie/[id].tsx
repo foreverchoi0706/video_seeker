@@ -60,7 +60,7 @@ const MoviePage = ({ item, reviews, similars }: MoviePageProps) => {
               <div className="flex flex-col justify-center gap-3 flex-grow">
                 <LineProgressBar percent={item.vote_average * 10} />
                 <div className="p-4 grid gap-4 grid-cols-auto-150 justify-center">
-                <div className="text-center sm:text-left">
+                  <div className="text-center sm:text-left">
                     <strong className="block">Release Date</strong>
                     {item.release_date}
                   </div>

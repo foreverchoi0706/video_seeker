@@ -35,7 +35,7 @@ const List = ({ theme, videos, cast }: ListProps) => {
           ? videos.results.map((item) => (
               <li className="relative" key={nanoid()}>
                 <div className="w-52 overflow-hidden rounded-md">
-                {item.poster_path ? (
+                  {item.poster_path ? (
                     <img
                       alt="poster"
                       className="poster"

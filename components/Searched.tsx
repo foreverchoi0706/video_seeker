@@ -41,8 +41,12 @@ const Searched = ({ multi, movies, tvShows, peoples }: SearchedProps) => {
                 <div className="poster bg-gray-50 w-full h-full flex flex-col justify-center items-center text-center text-xs">
                   <strong>{item.original_title}</strong>
                   <strong>{item.name}</strong>
-                  <strong>{item.release_date  && `(${item.release_date})`}</strong>
-                  <strong>{item.first_air_date  && `(${item.first_air_date})`}</strong>
+                  <strong>
+                    {item.release_date && `(${item.release_date})`}
+                  </strong>
+                  <strong>
+                    {item.first_air_date && `(${item.first_air_date})`}
+                  </strong>
                 </div>
               )}
             </li>
@@ -67,10 +71,7 @@ const Searched = ({ multi, movies, tvShows, peoples }: SearchedProps) => {
           ))}
         {tvShows &&
           tvShows.results.map((item) => (
-            <li
-              key={item.id}
-              onClick={() => router.push(`/tvShow/${item.id}`)}
-            >
+            <li key={item.id} onClick={() => router.push(`/tvShow/${item.id}`)}>
               {item.poster_path ? (
                 <img
                   alt="poster"
@@ -81,7 +82,9 @@ const Searched = ({ multi, movies, tvShows, peoples }: SearchedProps) => {
               ) : (
                 <div className="poster bg-gray-100  w-full h-full flex flex-col justify-center items-center text-center text-xs">
                   <strong>{item.name}</strong>
-                  <strong>{item.first_air_date && `(${item.first_air_date})`}</strong>
+                  <strong>
+                    {item.first_air_date && `(${item.first_air_date})`}
+                  </strong>
                 </div>
               )}
             </li>

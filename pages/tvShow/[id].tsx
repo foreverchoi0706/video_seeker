@@ -62,7 +62,6 @@ const TvShowPage = ({ item, reviews, similars }: TvShowPageProps) => {
             <div className="flex gap-3 items-center mb-2">
               <div className="flex flex-col justify-center gap-3 flex-grow">
                 <LineProgressBar percent={item.vote_average * 10} />
-                
               </div>
             </div>
 

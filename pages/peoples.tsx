@@ -44,7 +44,7 @@ const PeoplesPage: NextPage<any> = ({ peoples, div }: PeoplesProps) => {
     (page: number) => router.replace(`/peoples?page=${page}`),
     []
   );
-      
+
   return (
     <article className="w-full">
       <Head>
@@ -77,7 +77,7 @@ const PeoplesPage: NextPage<any> = ({ peoples, div }: PeoplesProps) => {
                 <img
                   loading="lazy"
                   style={{
-                    height : "235px"
+                    height: "235px",
                   }}
                   className="poster"
                   src="https://www.kindpng.com/picc/m/21-214439_free-high-quality-person-icon-default-profile-picture.png"

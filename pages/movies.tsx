@@ -44,7 +44,7 @@ const MoviesPage: NextPage<any> = ({ movies, div }: MoviesPageProps) => {
   );
 
   const search = async (keyword: string): Promise<any> =>
-  dispatch(searchMovies(keyword));
+    dispatch(searchMovies(keyword));
 
   return (
     <article className="w-full">
@@ -65,7 +65,7 @@ const MoviesPage: NextPage<any> = ({ movies, div }: MoviesPageProps) => {
           <Poster key={nanoid()} item={item} div="movie" />
         ))}
       </section>
-      <Remote list={movies} goPage={goPage}/>
+      <Remote list={movies} goPage={goPage} />
     </article>
   );
 };

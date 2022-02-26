@@ -5,7 +5,7 @@ import {
   useEffect,
   useRef,
   useState,
-  RefObject
+  RefObject,
 } from "react";
 
 const DarkModeToogle = () => {
@@ -17,7 +17,6 @@ const DarkModeToogle = () => {
     if (darkMode) {
       document.querySelector("html")?.classList.add("dark");
       refToggle.current?.classList.add("toggled");
-      
     } else {
       document.querySelector("html")?.classList.remove("dark");
       refToggle.current?.classList.remove("toggled");

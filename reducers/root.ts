@@ -8,5 +8,4 @@ const root = combineReducers({
 
 export type RootState = ReturnType<typeof root>;
 
-
 export default root;
