@@ -37,7 +37,7 @@ const MoviePage = ({ item, reviews, similars }: MoviePageProps) => {
         />
         <div
           className="
-       relative flex p-1 gap-3 w-full lg:gap-10  2xl:text-white 2xl:p-x5vw 2xl:top-1/2 2xl:left-1/2 2xl:transform 2xl:-translate-x-1/2 2xl:-translate-y-1/2 2xl:absolute"
+       relative flex p-1 gap-3 w-full lg:gap-10 2xl:p-x5vw 2xl:top-1/2 2xl:left-1/2 2xl:transform 2xl:-translate-x-1/2 2xl:-translate-y-1/2 2xl:absolute"
         >
           <img
             className="hidden sm:inline rounded-lg w-60 h-96"

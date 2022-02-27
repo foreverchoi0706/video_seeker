@@ -1,15 +1,19 @@
+/**@lib */
 import type { AppProps } from "next/app";
-import wrapper from "../wrapper";
+import wrapper from "@/wrapper";
 /**@components */
-import Layout from "../components/Layout";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 /**@styles */
-import "../styles/globals.css";
+import "@/globals.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <Layout>
+    <>
+      <Header />
       <Component {...pageProps} />
-    </Layout>
+      <Footer />
+    </>
   );
 }
 

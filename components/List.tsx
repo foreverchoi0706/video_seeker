@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from "react";
+import React, { FC, memo, useCallback } from "react";
 import { useRouter } from "next/router";
 import { CircularProgressbarWithChildren } from "react-circular-progressbar";
 import { RiMovieLine } from "react-icons/ri";
@@ -11,18 +11,21 @@ import ListBtns from "./ListBtns";
 import Videos from "../types/Video";
 import { nanoid } from "nanoid";
 
-interface ListProps {
+interface IProps {
   theme?: string;
   videos?: Videos;
-  cast?: Array<Cast>;
+  cast?: Cast[];
 }
 
-const List = ({ theme, videos, cast }: ListProps) => {
+const List: FC<IProps> = ({ theme, videos, cast }) => {
   const router = useRouter();
 
-  const goDetail = useCallback((id: number, div?: string) => {
-    router.push(`/${div}/${id}`);
-  }, []);
+  const goDetail = useCallback(
+    (id: number, div?: string) => {
+      router.push(`/${div}/${id}`);
+    },
+    [router]
+  );
 
   return (
     <section className="flex flex-col gap-2 my-10 px-3 relative">
@@ -39,7 +42,7 @@ const List = ({ theme, videos, cast }: ListProps) => {
                     <img
                       alt="poster"
                       className="poster"
-                      loading="lazy"
+                      loading="eager"
                       src={`https://www.themoviedb.org/t/p/w220_and_h330_face/${item.poster_path}`}
                       onClick={() =>
                         goDetail(item.id, item.title ? "movie" : "tvShow")
@@ -58,7 +61,7 @@ const List = ({ theme, videos, cast }: ListProps) => {
                     />
                   )}
                 </div>
-                <div className="absolute -right-3 text-white bottom-12 w-10 h-10 z-10">
+                <div className="absolute -right-3 bottom-12 w-10 h-10 z-10">
                   <CircularProgressbarWithChildren
                     background={true}
                     value={item.vote_average}
@@ -107,7 +110,7 @@ const List = ({ theme, videos, cast }: ListProps) => {
                     />
                   )}
                 </div>
-                <div className="absolute -right-3 text-white bottom-12 w-10 h-10 z-10">
+                <div className="absolute -right-3 bottom-12 w-10 h-10 z-10">
                   <CircularProgressbarWithChildren
                     background={true}
                     value={item.vote_average}

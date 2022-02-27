@@ -29,7 +29,7 @@ const Poster = ({ item, div }: PosterProps) => {
           onClick={() => goDetail(item.id)}
         />
       </div>
-      <div className="absolute -right-1 text-white bottom-12 w-10 h-10 z-10">
+      <div className="absolute -right-1 bottom-12 w-10 h-10 z-10">
         <CircularProgressbarWithChildren
           background={true}
           value={item.vote_average}
